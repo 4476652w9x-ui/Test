@@ -27,21 +27,20 @@
     <rect x="-7" y="-66" width="14" height="6" rx="1" fill="url(#hGold)"/>
 
     <!-- SV -->
-    <text text-anchor="middle" y="22" font-size="92"
-          font-family="'Trajan Pro','Cinzel','Didot','Times New Roman',serif"
-          font-weight="700" fill="url(#hGold)" letter-spacing="-7">SV</text>
+    <text text-anchor="middle" y="18" font-size="78"
+          font-family="'DejaVu Serif','Cinzel','Trajan Pro','Times New Roman',serif"
+          font-weight="700" fill="url(#hGold)" letter-spacing="-4">SV</text>
   </g>
 
   <!-- Wordmark -->
   <g transform="translate(255 0)">
-    <text x="0" y="118" font-family="'Trajan Pro','Cinzel','Didot','Times New Roman',serif"
-          font-size="64" font-weight="700" fill="#0B4632" letter-spacing="6">SCUDERIA</text>
-    <text x="0" y="172" font-family="'Trajan Pro','Cinzel','Didot','Times New Roman',serif"
-          font-size="64" font-weight="400" fill="url(#hGold)" letter-spacing="14"
-          font-style="italic">VERDE</text>
+    <text x="0" y="118" font-family="'DejaVu Serif','Cinzel','Trajan Pro','Times New Roman',serif"
+          font-size="58" font-weight="700" fill="#0B4632" letter-spacing="6">SCUDERIA</text>
+    <text x="0" y="172" font-family="'DejaVu Serif','Cinzel','Trajan Pro','Times New Roman',serif"
+          font-size="58" font-weight="700" fill="#A8853F" letter-spacing="14">VERDE</text>
     <!-- Tagline rule -->
-    <line x1="2" y1="190" x2="540" y2="190" stroke="url(#hGold)" stroke-width="0.8" opacity="0.7"/>
-    <text x="2" y="212" font-family="'Helvetica Neue','Inter',Arial,sans-serif"
+    <line x1="2" y1="190" x2="540" y2="190" stroke="#C9A961" stroke-width="0.9" opacity="0.85"/>
+    <text x="2" y="212" font-family="'DejaVu Sans','Helvetica Neue','Inter',Arial,sans-serif"
           font-size="13" letter-spacing="6" fill="#0B4632">
       TURNKEY SIM RACING · AUSTRALIA
     </text>

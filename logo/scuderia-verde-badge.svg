@@ -67,9 +67,9 @@
   <!-- Top chapter divider -->
   <line x1="95" y1="172" x2="385" y2="172" stroke="url(#goldSoft)" stroke-width="1"/>
 
-  <!-- Top arc text: EST · MMXXVI -->
-  <text font-family="'Trajan Pro','Cinzel','Times New Roman',serif" font-size="15"
-        fill="url(#gold)" letter-spacing="6" font-weight="600">
+  <!-- Top arc text -->
+  <text font-family="'DejaVu Serif','Cinzel','Trajan Pro','Times New Roman',serif" font-size="15"
+        fill="url(#gold)" letter-spacing="6" font-weight="700">
     <textPath href="#topArc" startOffset="50%" text-anchor="middle">SCUDERIA · VERDE</textPath>
   </text>
 
@@ -99,9 +99,9 @@
   </g>
 
   <!-- SV monogram -->
-  <g transform="translate(240 295)" font-family="'Trajan Pro','Cinzel','Didot','Times New Roman',serif"
+  <g transform="translate(240 295)" font-family="'DejaVu Serif','Cinzel','Trajan Pro','Times New Roman',serif"
      fill="url(#gold)" font-weight="700">
-    <text text-anchor="middle" y="34" font-size="148" letter-spacing="-10">SV</text>
+    <text text-anchor="middle" y="30" font-size="130" letter-spacing="-6">SV</text>
   </g>
 
   <!-- Chequered flag bar -->
@@ -124,9 +124,9 @@
     </g>
   </g>
 
-  <!-- Bottom arc text: AUSTRALIA -->
-  <text font-family="'Trajan Pro','Cinzel','Times New Roman',serif" font-size="14"
-        fill="url(#gold)" letter-spacing="10" font-weight="600">
+  <!-- Bottom arc text -->
+  <text font-family="'DejaVu Serif','Cinzel','Trajan Pro','Times New Roman',serif" font-size="14"
+        fill="url(#gold)" letter-spacing="10" font-weight="700">
     <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">— AUSTRALIA —</textPath>
   </text>
 </svg>

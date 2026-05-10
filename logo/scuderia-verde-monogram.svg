@@ -21,7 +21,7 @@
   <rect x="132" y="14" width="16" height="9" rx="1.5" fill="url(#mGold)"/>
 
   <!-- SV -->
-  <text x="140" y="190" text-anchor="middle"
-        font-family="'Trajan Pro','Cinzel','Didot','Times New Roman',serif"
-        font-size="170" font-weight="700" fill="url(#mGold)" letter-spacing="-12">SV</text>
+  <text x="140" y="180" text-anchor="middle"
+        font-family="'DejaVu Serif','Cinzel','Trajan Pro','Times New Roman',serif"
+        font-size="138" font-weight="700" fill="url(#mGold)" letter-spacing="-6">SV</text>
 </svg>
