@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 560" role="img" aria-label="Scuderia Verde crest">
+  <title>Scuderia Verde — Crest</title>
+
+  <defs>
+    <linearGradient id="verde" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#11614A"/>
+      <stop offset="55%" stop-color="#0B4632"/>
+      <stop offset="100%" stop-color="#052718"/>
+    </linearGradient>
+
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F1D58A"/>
+      <stop offset="45%" stop-color="#C9A961"/>
+      <stop offset="100%" stop-color="#8A6A33"/>
+    </linearGradient>
+
+    <linearGradient id="goldSoft" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E8C77A" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#A88547" stop-opacity="0.85"/>
+    </linearGradient>
+
+    <radialGradient id="sheen" cx="0.5" cy="0.25" r="0.85">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.10"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <path id="topArc" d="M 90 130 Q 240 60 390 130"/>
+    <path id="bottomArc" d="M 80 430 Q 240 510 400 430"/>
+  </defs>
+
+  <!-- Outer gold shield -->
+  <path d="M 240 20
+           L 440 75
+           L 440 300
+           Q 440 410 240 540
+           Q 40 410 40 300
+           L 40 75 Z"
+        fill="url(#gold)"/>
+
+  <!-- Inner verde shield -->
+  <path d="M 240 38
+           L 425 88
+           L 425 300
+           Q 425 398 240 518
+           Q 55 398 55 300
+           L 55 88 Z"
+        fill="url(#verde)"/>
+
+  <!-- Sheen -->
+  <path d="M 240 38
+           L 425 88
+           L 425 300
+           Q 425 398 240 518
+           Q 55 398 55 300
+           L 55 88 Z"
+        fill="url(#sheen)"/>
+
+  <!-- Inner thin gold rule -->
+  <path d="M 240 52
+           L 412 99
+           L 412 298
+           Q 412 388 240 500
+           Q 68 388 68 298
+           L 68 99 Z"
+        fill="none" stroke="url(#goldSoft)" stroke-width="1.1" opacity="0.8"/>
+
+  <!-- Top chapter divider -->
+  <line x1="95" y1="172" x2="385" y2="172" stroke="url(#goldSoft)" stroke-width="1"/>
+
+  <!-- Top arc text: EST · MMXXVI -->
+  <text font-family="'Trajan Pro','Cinzel','Times New Roman',serif" font-size="15"
+        fill="url(#gold)" letter-spacing="6" font-weight="600">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">SCUDERIA · VERDE</textPath>
+  </text>
+
+  <!-- Southern Cross (subtle Australia nod), arranged classically -->
+  <g fill="url(#gold)" opacity="0.95">
+    <!-- α Crucis -->
+    <circle cx="240" cy="158" r="2.6"/>
+    <!-- β Crucis -->
+    <circle cx="278" cy="140" r="2.2"/>
+    <!-- γ Crucis -->
+    <circle cx="240" cy="118" r="2.4"/>
+    <!-- δ Crucis -->
+    <circle cx="206" cy="138" r="2.0"/>
+    <!-- ε Crucis -->
+    <circle cx="222" cy="150" r="1.4"/>
+  </g>
+
+  <!-- Steering wheel ring + spokes (racing nod) -->
+  <g transform="translate(240 295)">
+    <circle r="108" fill="none" stroke="url(#gold)" stroke-width="2.4"/>
+    <circle r="100" fill="none" stroke="url(#goldSoft)" stroke-width="0.6" opacity="0.7"/>
+    <!-- top notch (12 o'clock marker) -->
+    <rect x="-10" y="-112" width="20" height="9" rx="1.5" fill="url(#gold)"/>
+    <!-- side spoke ticks -->
+    <rect x="-112" y="-3" width="14" height="6" rx="1" fill="url(#gold)" opacity="0.85"/>
+    <rect x="98" y="-3" width="14" height="6" rx="1" fill="url(#gold)" opacity="0.85"/>
+  </g>
+
+  <!-- SV monogram -->
+  <g transform="translate(240 295)" font-family="'Trajan Pro','Cinzel','Didot','Times New Roman',serif"
+     fill="url(#gold)" font-weight="700">
+    <text text-anchor="middle" y="34" font-size="148" letter-spacing="-10">SV</text>
+  </g>
+
+  <!-- Chequered flag bar -->
+  <g transform="translate(240 408)">
+    <g transform="translate(-66 0)">
+      <!-- 11 cols x 2 rows, 12px squares -->
+      <g>
+        <rect x="0"   y="0"  width="12" height="12" fill="url(#gold)"/>
+        <rect x="24"  y="0"  width="12" height="12" fill="url(#gold)"/>
+        <rect x="48"  y="0"  width="12" height="12" fill="url(#gold)"/>
+        <rect x="72"  y="0"  width="12" height="12" fill="url(#gold)"/>
+        <rect x="96"  y="0"  width="12" height="12" fill="url(#gold)"/>
+        <rect x="120" y="0"  width="12" height="12" fill="url(#gold)"/>
+        <rect x="12"  y="12" width="12" height="12" fill="url(#gold)"/>
+        <rect x="36"  y="12" width="12" height="12" fill="url(#gold)"/>
+        <rect x="60"  y="12" width="12" height="12" fill="url(#gold)"/>
+        <rect x="84"  y="12" width="12" height="12" fill="url(#gold)"/>
+        <rect x="108" y="12" width="12" height="12" fill="url(#gold)"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Bottom arc text: AUSTRALIA -->
+  <text font-family="'Trajan Pro','Cinzel','Times New Roman',serif" font-size="14"
+        fill="url(#gold)" letter-spacing="10" font-weight="600">
+    <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">— AUSTRALIA —</textPath>
+  </text>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280" role="img" aria-label="SV monogram">
+  <title>Scuderia Verde — Monogram</title>
+
+  <defs>
+    <linearGradient id="mVerde" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#11614A"/>
+      <stop offset="100%" stop-color="#072719"/>
+    </linearGradient>
+    <linearGradient id="mGold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F1D58A"/>
+      <stop offset="100%" stop-color="#9B7E3F"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Disc -->
+  <circle cx="140" cy="140" r="130" fill="url(#mVerde)"/>
+  <circle cx="140" cy="140" r="130" fill="none" stroke="url(#mGold)" stroke-width="3"/>
+  <circle cx="140" cy="140" r="120" fill="none" stroke="url(#mGold)" stroke-width="0.8" opacity="0.6"/>
+
+  <!-- 12 o'clock marker -->
+  <rect x="132" y="14" width="16" height="9" rx="1.5" fill="url(#mGold)"/>
+
+  <!-- SV -->
+  <text x="140" y="190" text-anchor="middle"
+        font-family="'Trajan Pro','Cinzel','Didot','Times New Roman',serif"
+        font-size="170" font-weight="700" fill="url(#mGold)" letter-spacing="-12">SV</text>
+</svg>

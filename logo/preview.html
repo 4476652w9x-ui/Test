@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Scuderia Verde — Brand Marks</title>
+  <style>
+    :root{
+      --verde:#0B4632;
+      --verde-dark:#052718;
+      --gold:#C9A961;
+      --gold-soft:#E8C77A;
+      --ivory:#F6F1E6;
+      --ink:#0a0a0a;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--ivory);color:var(--ink);
+      font-family:'Helvetica Neue','Inter',system-ui,Arial,sans-serif}
+    header{
+      background:linear-gradient(180deg,var(--verde) 0%,var(--verde-dark) 100%);
+      color:var(--ivory);padding:48px 32px;text-align:center;
+      border-bottom:1px solid var(--gold);
+    }
+    header h1{margin:0 0 8px;font-family:'Cinzel','Didot',Georgia,serif;
+      font-weight:600;letter-spacing:8px;font-size:28px;color:var(--gold-soft)}
+    header p{margin:0;letter-spacing:4px;font-size:12px;color:var(--ivory);opacity:.85}
+
+    .grid{max-width:1200px;margin:48px auto;padding:0 24px;
+      display:grid;gap:28px;grid-template-columns:repeat(12,1fr)}
+    .card{background:#fff;border:1px solid #e8e1cf;border-radius:6px;
+      padding:32px;display:flex;flex-direction:column;align-items:center;gap:20px;
+      box-shadow:0 1px 3px rgba(0,0,0,.04)}
+    .card.dark{background:linear-gradient(160deg,#0B4632,#052718);color:var(--ivory);
+      border-color:#0a3a28}
+    .card .label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#6b6353}
+    .card.dark .label{color:var(--gold-soft)}
+    .span-12{grid-column:span 12}
+    .span-8{grid-column:span 8}
+    .span-6{grid-column:span 6}
+    .span-4{grid-column:span 4}
+    @media(max-width:900px){
+      .span-8,.span-6,.span-4{grid-column:span 12}
+    }
+    .card svg{max-width:100%;height:auto;display:block}
+
+    .swatches{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+    .sw{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;
+      letter-spacing:1px;color:#6b6353}
+    .sw .chip{width:64px;height:64px;border-radius:4px;border:1px solid rgba(0,0,0,.08)}
+
+    footer{padding:32px;text-align:center;font-size:12px;letter-spacing:3px;color:#6b6353}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>SCUDERIA · VERDE</h1>
+    <p>TURNKEY SIM RACING · AUSTRALIA</p>
+  </header>
+
+  <main class="grid">
+    <section class="card dark span-6">
+      <div class="label">Crest</div>
+      <object data="scuderia-verde-badge.svg" type="image/svg+xml" style="width:340px"></object>
+    </section>
+
+    <section class="card span-6">
+      <div class="label">Crest on ivory</div>
+      <object data="scuderia-verde-badge.svg" type="image/svg+xml" style="width:340px"></object>
+    </section>
+
+    <section class="card span-12">
+      <div class="label">Horizontal Lockup</div>
+      <object data="scuderia-verde-horizontal.svg" type="image/svg+xml" style="width:780px;max-width:100%"></object>
+    </section>
+
+    <section class="card span-4">
+      <div class="label">Monogram</div>
+      <object data="scuderia-verde-monogram.svg" type="image/svg+xml" style="width:200px"></object>
+    </section>
+
+    <section class="card dark span-4">
+      <div class="label">Monogram — reverse</div>
+      <object data="scuderia-verde-monogram.svg" type="image/svg+xml" style="width:200px"></object>
+    </section>
+
+    <section class="card span-4">
+      <div class="label">Palette</div>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#0B4632"></div>VERDE</div>
+        <div class="sw"><div class="chip" style="background:#052718"></div>NOTTE</div>
+        <div class="sw"><div class="chip" style="background:#C9A961"></div>ORO</div>
+        <div class="sw"><div class="chip" style="background:#F6F1E6"></div>AVORIO</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>EST · MMXXVI · ORO E VERDE</footer>
+</body>
+</html>

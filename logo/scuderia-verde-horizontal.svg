@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 240" role="img" aria-label="Scuderia Verde">
+  <title>Scuderia Verde — Horizontal Lockup</title>
+
+  <defs>
+    <linearGradient id="hVerde" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#11614A"/>
+      <stop offset="100%" stop-color="#0A4231"/>
+    </linearGradient>
+    <linearGradient id="hGold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E8C77A"/>
+      <stop offset="100%" stop-color="#A88547"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Mark: hex tile + steering wheel + SV -->
+  <g transform="translate(120 120)">
+    <!-- Hex tile -->
+    <polygon points="0,-100 86,-50 86,50 0,100 -86,50 -86,-50" fill="url(#hVerde)"/>
+    <polygon points="0,-100 86,-50 86,50 0,100 -86,50 -86,-50"
+             fill="none" stroke="url(#hGold)" stroke-width="2"/>
+    <!-- Inner thin gold rule -->
+    <polygon points="0,-86 74,-43 74,43 0,86 -74,43 -74,-43"
+             fill="none" stroke="url(#hGold)" stroke-width="0.7" opacity="0.7"/>
+
+    <!-- Steering wheel ring -->
+    <circle r="64" fill="none" stroke="url(#hGold)" stroke-width="1.6"/>
+    <rect x="-7" y="-66" width="14" height="6" rx="1" fill="url(#hGold)"/>
+
+    <!-- SV -->
+    <text text-anchor="middle" y="22" font-size="92"
+          font-family="'Trajan Pro','Cinzel','Didot','Times New Roman',serif"
+          font-weight="700" fill="url(#hGold)" letter-spacing="-7">SV</text>
+  </g>
+
+  <!-- Wordmark -->
+  <g transform="translate(255 0)">
+    <text x="0" y="118" font-family="'Trajan Pro','Cinzel','Didot','Times New Roman',serif"
+          font-size="64" font-weight="700" fill="#0B4632" letter-spacing="6">SCUDERIA</text>
+    <text x="0" y="172" font-family="'Trajan Pro','Cinzel','Didot','Times New Roman',serif"
+          font-size="64" font-weight="400" fill="url(#hGold)" letter-spacing="14"
+          font-style="italic">VERDE</text>
+    <!-- Tagline rule -->
+    <line x1="2" y1="190" x2="540" y2="190" stroke="url(#hGold)" stroke-width="0.8" opacity="0.7"/>
+    <text x="2" y="212" font-family="'Helvetica Neue','Inter',Arial,sans-serif"
+          font-size="13" letter-spacing="6" fill="#0B4632">
+      TURNKEY SIM RACING · AUSTRALIA
+    </text>
+  </g>
+</svg>
