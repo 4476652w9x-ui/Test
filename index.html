@@ -273,8 +273,9 @@
   <details class="notes">
     <summary>Assumptions &amp; key findings</summary>
     <ul>
-      <li><b>Scenarios.</b> A — relocate to Queenstown NZ (12 mo). B — travel year: Mexico (3) → Canada (2) → France (3) → Georgia (4). C — Queenstown NZ (10 mo) + Chamonix peak ski Jan–Feb (2 mo). D — Melbourne base (10 mo) + Chamonix Jan–Feb (2 mo).</li>
-      <li><b>Chamonix is the biggest seasonal risk.</b> Jan–Feb peak ski accommodation runs ~AUD&nbsp;$6.5k–10k/mo (point ~$8k) — roughly double general France. It is a separate line, not inherited from France.</li>
+      <li><b>Scenarios.</b> A — relocate to Queenstown NZ (12 mo). B — travel year: Mexico (3) · Canada (2) · Georgia (4) · France + Chamonix (3 combined). C — Queenstown NZ + Chamonix peak ski. D — Melbourne base + Chamonix. The <b>Chamonix stay</b> driver (1–3 months) sets the alpine stint across B, C and D.</li>
+      <li><b>Chamonix now applies to the travel year too.</b> In Scenario B the ski stint is carved out of France's allocation so total Schengen time stays at ~3 months (within the 90/180 rule); in C and D it shortens the NZ/Melbourne base by the same number of months.</li>
+      <li><b>Chamonix is the biggest seasonal risk.</b> Peak ski accommodation runs ~AUD&nbsp;$6.5k–10k/mo (point ~$8k) — roughly double general France. It is a separate line, not inherited from France.</li>
       <li><b>Schooling ≈ $0.</b> Assuming Australian/NZ citizenship, the child is a domestic student — NZ &amp; Melbourne public school is free (small voluntary donations only). Short Chamonix &amp; travel-year stints use distance education (materials only).</li>
       <li><b>NZ car = depreciation, not cash.</b> Modelled as ~$6k net depreciation over 12 mo (resold on exit), plus ~$4.5k removal/shipping — not a $30k cash outlay.</li>
       <li><b>Mounjaro.</b> $800/mo covers low–mid dose; raise toward $1,000 for a high maintenance dose. For the travel year the real risk is continuity of supply — a pre-departure stockpile is modelled as a one-off.</li>
@@ -298,7 +299,7 @@
 
   // ---- Driver state ----
   var defaults = {
-    accom:0.5, food:0.5, cham:8000, meds:800, petrol:3.40,
+    accom:0.5, food:0.5, cham:8000, chamMonths:2, meds:800, petrol:3.40,
     storage:300, audeur:0.60, audnzd:1.20, flight:1.0
   };
   var S = Object.assign({}, defaults);
@@ -312,7 +313,10 @@
       hint:"Per family/day, incl. local transport (varies by country)."},
     {key:"cham", name:"Chamonix peak accom", min:6500, max:10000, step:100,
       fmt:function(v){return "$"+Math.round(v/100)*100+"/mo";},
-      hint:"Jan–Feb ski-season chalet/apt (Scenarios C &amp; D)."},
+      hint:"Peak ski-season chalet/apt (Scenarios B, C &amp; D)."},
+    {key:"chamMonths", name:"Chamonix stay", min:1, max:3, step:1,
+      fmt:function(v){var n=Math.round(v);return n+(n===1?" month":" months");},
+      hint:"Length of the alpine ski stint. In the travel year it shares France's Schengen window."},
     {key:"meds", name:"Medications (Mounjaro)", min:800, max:1000, step:10,
       fmt:function(v){return "$"+Math.round(v)+"/mo";},
       hint:"$800 low–mid dose; ~$1,000 high maintenance dose."},
@@ -343,6 +347,7 @@
     var nzdToAud = 1 / S.audnzd;       // NZD -> AUD
     var fl = S.flight;
     var dayAcc = S.accom, dayFood = S.food;
+    var cm = Math.round(S.chamMonths);   // Chamonix months (shared lever)
 
     var c = {accommodation:0, food:0, carTransport:0, flights:0, relocation:0,
              medications:0, insurance:0, storage:0, education:0, visas:0, unforeseen:0};
@@ -359,10 +364,9 @@
       c.food += food*DPM*n;
       c.carTransport += (petrol+rego)*n;
     }
-    function chamMonths(n){
+    function chamLeg(n){
       c.accommodation += S.cham*fxEUR*n;
       c.food += lerp(80,100,dayFood)*fxEUR*DPM*n;
-      c.education += 100*n;            // distance-ed materials
     }
     function melbMonths(n){
       c.accommodation += lerp(3250,4333,dayAcc)*n;
@@ -385,27 +389,33 @@
       c.flights = 3*625*fl;                        // trans-Tasman return allowance
       c.visas = 0;
     } else if(id==="B"){
-      name="Scenario B · Travel year"; sub="Mexico → Canada → France → Georgia";
+      name="Scenario B · Travel year";
+      sub="Mexico · Canada · France · Georgia + "+cm+" mo Chamonix";
       color="var(--B)"; insAnnual=3000;
-      travelLeg(3, lerp(2000,2600,dayAcc), lerp(50,70,dayFood), false); // Mexico
-      travelLeg(2, lerp(4000,5500,dayAcc), lerp(80,100,dayFood), false);// Canada
-      travelLeg(3, lerp(4000,5000,dayAcc), lerp(80,100,dayFood), true); // France
-      travelLeg(4, lerp(1000,1400,dayAcc), lerp(40,50,dayFood), false); // Georgia
+      travelLeg(3, lerp(2000,2600,dayAcc), lerp(50,70,dayFood), false);      // Mexico
+      travelLeg(2, lerp(4000,5500,dayAcc), lerp(80,100,dayFood), false);     // Canada
+      travelLeg(Math.max(0,3-cm), lerp(4000,5000,dayAcc), lerp(80,100,dayFood), true); // France (shares Schengen window with Chamonix)
+      travelLeg(4, lerp(1000,1400,dayAcc), lerp(40,50,dayFood), false);      // Georgia
+      chamLeg(cm);                                  // Chamonix ski stint (within the same 3-mo Schengen allocation)
       c.education = 100*12;                         // distance ed all year
       c.flights = 3*4600*fl;                        // round-the-world tickets
       c.relocation = 1500;                          // pre-departure meds stockpile
       c.visas = (20*2)/S.audeur + 7;                // ETIAS x2 adults + Canada eTA
     } else if(id==="C"){
-      name="Scenario C · NZ + Chamonix"; sub="Queenstown 10 mo + Chamonix ski Jan–Feb";
+      name="Scenario C · NZ + Chamonix";
+      sub="Queenstown "+(12-cm)+" mo + Chamonix ski "+cm+" mo";
       color="var(--C)";
-      nzMonths(10); chamMonths(2);
+      nzMonths(12-cm); chamLeg(cm);
+      c.education = 100*cm;                          // distance ed during Chamonix
       c.relocation = 6000 + 4500;
       c.flights = 3*625*fl + 3*2300*fl;             // trans-Tasman + NZ→Europe return
       c.visas = (20*2)/S.audeur;
     } else { // D
-      name="Scenario D · Melbourne + Chamonix"; sub="Melbourne base 10 mo + Chamonix Jan–Feb";
+      name="Scenario D · Melbourne + Chamonix";
+      sub="Melbourne "+(12-cm)+" mo + Chamonix "+cm+" mo";
       color="var(--D)";
-      melbMonths(10); chamMonths(2);
+      melbMonths(12-cm); chamLeg(cm);
+      c.education = 100*cm;                          // distance ed during Chamonix
       c.relocation = 1500;                          // light local move
       c.flights = 3*2300*fl;                        // Australia→Europe return
       c.visas = (20*2)/S.audeur;
@@ -483,7 +493,7 @@
     t.className="tab"; t.setAttribute("role","tab"); t.dataset.id=id;
     t.innerHTML='<span class="tdot" style="background:'+m.color+'"></span>'+
       '<span><span class="tname">'+m.name.split(" · ")[1]+'</span>'+
-      '<span class="tdesc">'+m.sub+'</span>'+
+      '<span class="tdesc" id="td-'+id+'">'+m.sub+'</span>'+
       '<span class="ttot" id="tt-'+id+'" style="color:'+m.color+'"></span></span>';
     t.addEventListener("click",function(){selected=id;render();});
     tabsEl.appendChild(t);
@@ -504,6 +514,7 @@
     IDS.forEach(function(id){
       var tab=tabsEl.querySelector('[data-id="'+id+'"]');
       tab.setAttribute("aria-selected", id===selected ? "true":"false");
+      document.getElementById("td-"+id).textContent=models[id].sub;
       document.getElementById("tt-"+id).textContent=fmt$(models[id].total)+" · 12 mo";
     });
 
