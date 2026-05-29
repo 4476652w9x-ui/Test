@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#F0EEE6" />
+<title>Relocation & Travel Cost Calculator — Family of 3 · 12 Months · AUD</title>
+<style>
+  :root{
+    --bg:#F0EEE6;
+    --surface:#FAF9F5;
+    --card:#FFFFFF;
+    --ink:#181816;
+    --muted:#6F6E68;
+    --faint:#9A988F;
+    --line:#E6E1D5;
+    --line-soft:#EFEBE0;
+    --clay:#CC785C;
+    --clay-dark:#B0573A;
+    --clay-soft:#F2DDD2;
+    --A:#4F8A7B;  /* NZ */
+    --B:#CC785C;  /* Travel year */
+    --C:#8A6FA8;  /* NZ + Chamonix */
+    --D:#5B7FA6;  /* Melbourne + Chamonix */
+    --good:#3E7D63;
+    --warn:#B0573A;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --shadow:0 1px 2px rgba(40,33,20,.04),0 6px 18px rgba(40,33,20,.05);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:20px 16px 64px}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;margin:0}
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--clay-dark);font-weight:600}
+  .muted{color:var(--muted)}
+  .faint{color:var(--faint)}
+
+  /* Header */
+  header{margin:6px 0 18px}
+  header h1{font-size:clamp(26px,7vw,40px);line-height:1.08;margin:8px 0 10px}
+  header p{margin:0;color:var(--muted);font-size:15px;max-width:60ch}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+  .chip{background:var(--surface);border:1px solid var(--line);border-radius:999px;
+    padding:5px 11px;font-size:12.5px;color:var(--muted);white-space:nowrap}
+  .chip b{color:var(--ink);font-weight:600}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    box-shadow:var(--shadow);padding:18px;margin-bottom:16px}
+  .card>.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:14px}
+  .card h2{font-size:19px}
+  .sec-note{font-size:12.5px;color:var(--faint)}
+
+  /* Takeaways */
+  .hero{background:linear-gradient(160deg,#FBF2EC 0%,#FAF9F5 60%);border-color:var(--clay-soft)}
+  .hero .scn-name{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:21px;margin-bottom:2px}
+  .dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto}
+  .hero .scn-sub{font-size:13px;color:var(--muted);margin-bottom:16px}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:13px 14px}
+  .stat .label{font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .stat .val{font-family:var(--serif);font-size:clamp(22px,6.5vw,30px);line-height:1.1;margin-top:4px;
+    font-variant-numeric:tabular-nums}
+  .stat .val.big{font-size:clamp(28px,8vw,40px)}
+  .stat .unit{font-size:12px;color:var(--muted);margin-top:3px}
+  .stat.feature{grid-column:1 / -1;background:var(--ink);border-color:var(--ink)}
+  .stat.feature .label{color:#C9B6A8}
+  .stat.feature .val{color:#FBF3EC}
+  .stat.feature .unit{color:#A7A199}
+  .verdict{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;font-size:13px}
+  .pill{border-radius:10px;padding:7px 11px;border:1px solid var(--line);background:var(--surface)}
+  .pill b{font-weight:600}
+  .pill.good{border-color:#BFE0CF;background:#EDF7F1;color:#205c43}
+  .pill.warn{border-color:#ECC9B9;background:#FBEFE8;color:#8c4326}
+
+  /* Scenario tabs */
+  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .tab{display:flex;gap:10px;align-items:flex-start;text-align:left;cursor:pointer;
+    background:var(--surface);border:1.5px solid var(--line);border-radius:13px;padding:11px 12px;
+    font-family:var(--sans);color:var(--ink);transition:border-color .15s,background .15s,transform .05s}
+  .tab:active{transform:scale(.99)}
+  .tab .tdot{width:12px;height:12px;border-radius:50%;margin-top:3px;flex:0 0 auto}
+  .tab .tname{font-weight:600;font-size:14px;line-height:1.2}
+  .tab .tdesc{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.25}
+  .tab .ttot{font-size:12.5px;font-weight:600;margin-top:6px;font-variant-numeric:tabular-nums}
+  .tab[aria-selected="true"]{background:var(--card);box-shadow:var(--shadow)}
+
+  /* Comparison bars */
+  .cmp-row{display:grid;grid-template-columns:1fr;gap:5px;margin:0 0 13px;cursor:pointer}
+  .cmp-row:last-child{margin-bottom:0}
+  .cmp-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .cmp-name{font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:8px}
+  .cmp-val{font-size:13.5px;font-weight:600;font-variant-numeric:tabular-nums}
+  .cmp-track{height:13px;background:var(--line-soft);border-radius:7px;overflow:hidden}
+  .cmp-fill{height:100%;border-radius:7px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+  .cmp-row.dim{opacity:.5}
+
+  /* Sliders */
+  .drivers{display:grid;grid-template-columns:1fr 1fr;gap:16px 22px}
+  .driver{min-width:0}
+  .driver .dlab{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:7px}
+  .driver .dname{font-size:13.5px;font-weight:600}
+  .driver .dval{font-size:13px;font-weight:600;color:var(--clay-dark);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .driver .dhint{font-size:11px;color:var(--faint);margin-top:6px;line-height:1.3}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:26px;background:transparent;cursor:pointer;margin:0}
+  input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:6px;
+    background:linear-gradient(var(--clay),var(--clay)) no-repeat,var(--line);
+    background-size:var(--fill,50%) 100%}
+  input[type=range]::-moz-range-track{height:6px;border-radius:6px;background:var(--line)}
+  input[type=range]::-moz-range-progress{height:6px;border-radius:6px;background:var(--clay)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--clay);
+    box-shadow:0 1px 4px rgba(40,33,20,.22);margin-top:-8px}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;
+    border:2px solid var(--clay);box-shadow:0 1px 4px rgba(40,33,20,.22)}
+  .reset{margin-top:4px;border:1px solid var(--line);background:var(--surface);color:var(--muted);
+    border-radius:10px;padding:8px 13px;font-size:12.5px;font-family:var(--sans);cursor:pointer}
+  .reset:active{transform:scale(.98)}
+
+  /* Breakdown */
+  .bd-row{display:grid;grid-template-columns:1fr;gap:4px;margin-bottom:11px}
+  .bd-top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+  .bd-name{font-size:13px;display:flex;align-items:center;gap:8px}
+  .bd-name .sq{width:10px;height:10px;border-radius:3px;flex:0 0 auto}
+  .bd-amt{font-size:13px;font-variant-numeric:tabular-nums}
+  .bd-amt .pc{color:var(--faint);font-size:11.5px;margin-left:6px}
+  .bd-track{height:9px;background:var(--line-soft);border-radius:5px;overflow:hidden}
+  .bd-fill{height:100%;border-radius:5px;transition:width .3s}
+
+  /* Ratios */
+  .ratio-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .ratio{border:1px solid var(--line);border-radius:12px;padding:12px 13px;background:var(--surface)}
+  .ratio .rlab{font-size:11.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+  .ratio .rval{font-family:var(--serif);font-size:24px;margin-top:3px;font-variant-numeric:tabular-nums}
+  .ratio .rsub{font-size:11.5px;color:var(--muted);margin-top:2px}
+  .splitbar{height:11px;border-radius:6px;overflow:hidden;display:flex;margin-top:8px;background:var(--line-soft)}
+  .splitbar span{height:100%}
+  .split-legend{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-top:6px}
+
+  details.notes{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:2px 16px}
+  details.notes summary{cursor:pointer;font-weight:600;font-size:14px;padding:13px 0;list-style:none}
+  details.notes summary::-webkit-details-marker{display:none}
+  details.notes summary::after{content:"+";float:right;color:var(--clay-dark);font-size:18px;line-height:1}
+  details.notes[open] summary::after{content:"–"}
+  details.notes ul{margin:0 0 14px;padding-left:18px;color:var(--muted);font-size:13px}
+  details.notes li{margin-bottom:7px}
+  footer{text-align:center;font-size:11.5px;color:var(--faint);margin-top:24px;line-height:1.5}
+
+  @media (max-width:430px){
+    .wrap{padding:16px 13px 56px}
+    .drivers{grid-template-columns:1fr;gap:15px}
+    .tabs{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Cash-flow sensitivity model</div>
+    <h1>Relocation &amp; Travel Cost Calculator</h1>
+    <p>Four 12-month scenarios for a family of three, in Australian dollars. Move the drivers below and watch every scenario, ratio and daily burn re-price live.</p>
+    <div class="chips">
+      <div class="chip"><b>Family of 3</b></div>
+      <div class="chip"><b>12 months</b> · all-in</div>
+      <div class="chip">AUD · <b>mid-2026 FX</b></div>
+      <div class="chip">AUD/EUR <b id="chip-eur">0.60</b></div>
+      <div class="chip">AUD/NZD <b id="chip-nzd">1.20</b></div>
+      <div class="chip">AUD/USD <b>0.72</b></div>
+    </div>
+  </header>
+
+  <!-- KEY TAKEAWAYS -->
+  <section class="card hero" aria-label="Key takeaways">
+    <div class="scn-name"><span class="dot" id="hero-dot"></span><span id="hero-name">—</span></div>
+    <div class="scn-sub" id="hero-sub">—</div>
+    <div class="stat-grid">
+      <div class="stat feature">
+        <div class="label">Total 12-month cost</div>
+        <div class="val big" id="s-total">—</div>
+        <div class="unit">all-in, family of three</div>
+      </div>
+      <div class="stat">
+        <div class="label">Monthly average</div>
+        <div class="val" id="s-monthly">—</div>
+        <div class="unit">recurring + amortised one-offs</div>
+      </div>
+      <div class="stat">
+        <div class="label">Daily burn</div>
+        <div class="val" id="s-daily">—</div>
+        <div class="unit">per day · whole family</div>
+      </div>
+      <div class="stat">
+        <div class="label">Per person / day</div>
+        <div class="val" id="s-pp">—</div>
+        <div class="unit">÷ 3 people</div>
+      </div>
+      <div class="stat">
+        <div class="label">Accommodation share</div>
+        <div class="val" id="s-acc">—</div>
+        <div class="unit">of total spend</div>
+      </div>
+    </div>
+    <div class="verdict">
+      <div class="pill good" id="v-cheap">—</div>
+      <div class="pill warn" id="v-exp">—</div>
+      <div class="pill" id="v-spread">—</div>
+    </div>
+  </section>
+
+  <!-- SCENARIO PICKER -->
+  <section class="card">
+    <div class="sec-head"><h2>Choose a scenario</h2><span class="sec-note">tap to focus</span></div>
+    <div class="tabs" id="tabs" role="tablist"></div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="card">
+    <div class="sec-head"><h2>All four, side by side</h2><span class="sec-note">12-month total</span></div>
+    <div id="cmp"></div>
+  </section>
+
+  <!-- DRIVERS -->
+  <section class="card">
+    <div class="sec-head"><h2>Major drivers</h2><button class="reset" id="reset">Reset</button></div>
+    <div class="drivers" id="drivers"></div>
+  </section>
+
+  <!-- BREAKDOWN -->
+  <section class="card">
+    <div class="sec-head"><h2 id="bd-title">Where the money goes</h2><span class="sec-note" id="bd-note"></span></div>
+    <div id="breakdown"></div>
+  </section>
+
+  <!-- RATIOS -->
+  <section class="card">
+    <div class="sec-head"><h2>Ratios &amp; cash-flow shape</h2></div>
+    <div class="ratio-grid">
+      <div class="ratio">
+        <div class="rlab">Daily burn</div>
+        <div class="rval" id="r-daily">—</div>
+        <div class="rsub">family · per day</div>
+      </div>
+      <div class="ratio">
+        <div class="rlab">Cost per person-day</div>
+        <div class="rval" id="r-pp">—</div>
+        <div class="rsub">the comparable unit metric</div>
+      </div>
+      <div class="ratio" style="grid-column:1 / -1">
+        <div class="rlab">Recurring vs one-off</div>
+        <div class="splitbar"><span id="split-rec" style="background:var(--clay)"></span><span id="split-one" style="background:#D8B59E"></span></div>
+        <div class="split-legend"><span id="leg-rec">Recurring —</span><span id="leg-one">One-off —</span></div>
+      </div>
+      <div class="ratio">
+        <div class="rlab">Housing intensity</div>
+        <div class="rval" id="r-house">—</div>
+        <div class="rsub">accom ÷ total</div>
+      </div>
+      <div class="ratio">
+        <div class="rlab">vs cheapest scenario</div>
+        <div class="rval" id="r-delta">—</div>
+        <div class="rsub" id="r-delta-sub">premium over the floor</div>
+      </div>
+    </div>
+  </section>
+
+  <details class="notes">
+    <summary>Assumptions &amp; key findings</summary>
+    <ul>
+      <li><b>Scenarios.</b> A — relocate to Queenstown NZ (12 mo). B — travel year: Mexico (3) → Canada (2) → France (3) → Georgia (4). C — Queenstown NZ (10 mo) + Chamonix peak ski Jan–Feb (2 mo). D — Melbourne base (10 mo) + Chamonix Jan–Feb (2 mo).</li>
+      <li><b>Chamonix is the biggest seasonal risk.</b> Jan–Feb peak ski accommodation runs ~AUD&nbsp;$6.5k–10k/mo (point ~$8k) — roughly double general France. It is a separate line, not inherited from France.</li>
+      <li><b>Schooling ≈ $0.</b> Assuming Australian/NZ citizenship, the child is a domestic student — NZ &amp; Melbourne public school is free (small voluntary donations only). Short Chamonix &amp; travel-year stints use distance education (materials only).</li>
+      <li><b>NZ car = depreciation, not cash.</b> Modelled as ~$6k net depreciation over 12 mo (resold on exit), plus ~$4.5k removal/shipping — not a $30k cash outlay.</li>
+      <li><b>Mounjaro.</b> $800/mo covers low–mid dose; raise toward $1,000 for a high maintenance dose. For the travel year the real risk is continuity of supply — a pre-departure stockpile is modelled as a one-off.</li>
+      <li><b>NZ petrol is volatile.</b> 2026 prices are elevated ~35% by an oil shock (95-octane peaked ~NZD $3.62/L on 20 Apr 2026); long-run is ~NZD $2.50/L. Treat as a sensitivity input.</li>
+      <li><b>Visas.</b> NZ free (Trans-Tasman); Georgia free (365 days); Mexico free (180 days); Canada eTA ~$7; France/Schengen ETIAS €20/adult from late 2026 (under-18s exempt → the child pays nothing).</li>
+      <li><b>Daily food &amp; living</b> figures are per family of three, including local transport. Travel insurance, storage and an $800/mo unforeseen buffer apply across all scenarios.</li>
+    </ul>
+  </details>
+
+  <footer>
+    Indicative planning model · figures are estimates with ±5% FX bands · not financial advice.<br>
+    Built in the Anthropic prototype idiom · single page · iPhone-ready.
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var DPM = 30.4375, DPY = 365;
+
+  // ---- Driver state ----
+  var defaults = {
+    accom:0.5, food:0.5, cham:8000, meds:800, petrol:3.40,
+    storage:300, audeur:0.60, audnzd:1.20, flight:1.0
+  };
+  var S = Object.assign({}, defaults);
+
+  var driverDefs = [
+    {key:"accom", name:"Accommodation level", min:0, max:1, step:.01,
+      fmt:function(v){return v<.34?"Budget":v>.66?"Premium":"Mid-market";},
+      hint:"Slides each location between its budget and premium furnished rate."},
+    {key:"food", name:"Food &amp; daily living", min:0, max:1, step:.01,
+      fmt:function(v){return v<.34?"Lean":v>.66?"Generous":"Comfortable";},
+      hint:"Per family/day, incl. local transport (varies by country)."},
+    {key:"cham", name:"Chamonix peak accom", min:6500, max:10000, step:100,
+      fmt:function(v){return "$"+Math.round(v/100)*100+"/mo";},
+      hint:"Jan–Feb ski-season chalet/apt (Scenarios C &amp; D)."},
+    {key:"meds", name:"Medications (Mounjaro)", min:800, max:1000, step:10,
+      fmt:function(v){return "$"+Math.round(v)+"/mo";},
+      hint:"$800 low–mid dose; ~$1,000 high maintenance dose."},
+    {key:"petrol", name:"NZ petrol price", min:2.50, max:3.62, step:.01,
+      fmt:function(v){return "NZD $"+v.toFixed(2)+"/L";},
+      hint:"2026 is shock-elevated; long-run ~NZD $2.50 (Scenarios A &amp; C)."},
+    {key:"storage", name:"AU storage", min:300, max:600, step:10,
+      fmt:function(v){return "$"+Math.round(v)+"/mo";},
+      hint:"$300 = medium unit; $400–600 = full 2–3 bed household."},
+    {key:"audeur", name:"FX · AUD/EUR", min:0.56, max:0.64, step:.005,
+      fmt:function(v){return v.toFixed(3);},
+      hint:"Drives France &amp; Chamonix. Lower AUD/EUR = dearer."},
+    {key:"audnzd", name:"FX · AUD/NZD", min:1.14, max:1.26, step:.005,
+      fmt:function(v){return v.toFixed(3);},
+      hint:"Drives NZ accom, food, fuel. Higher AUD/NZD = cheaper."},
+    {key:"flight", name:"Flight pricing", min:0.8, max:1.3, step:.01,
+      fmt:function(v){return (v<.95?"Off-peak":v>1.12?"Peak":"Typical")+" ·×"+v.toFixed(2);},
+      hint:"Scales all air fares (off-peak ↔ school-holiday peak)."}
+  ];
+
+  function lerp(a,b,t){return a+(b-a)*t;}
+
+  // ---- The model ----
+  // returns {total, cats:{...}, oneoff, recurring, accom, name, sub, color}
+  function model(id){
+    var fxNZ = 1.20 / S.audnzd;        // multiplier on NZ AUD figures
+    var fxEUR = 0.60 / S.audeur;       // multiplier on EUR-priced AUD figures
+    var nzdToAud = 1 / S.audnzd;       // NZD -> AUD
+    var fl = S.flight;
+    var dayAcc = S.accom, dayFood = S.food;
+
+    var c = {accommodation:0, food:0, carTransport:0, flights:0, relocation:0,
+             medications:0, insurance:0, storage:0, education:0, visas:0, unforeseen:0};
+
+    // common monthly (all scenarios, all 12 months)
+    var medsMo = S.meds, storMo = S.storage, unfMo = 800;
+
+    function nzMonths(n){
+      var accom = lerp(3467,4333,dayAcc)*fxNZ;
+      var food  = lerp(80,100,dayFood)*fxNZ;
+      var petrol= 80*S.petrol*nzdToAud;     // ~80 L/mo family
+      var rego  = (245/12)*nzdToAud;
+      c.accommodation += accom*n;
+      c.food += food*DPM*n;
+      c.carTransport += (petrol+rego)*n;
+    }
+    function chamMonths(n){
+      c.accommodation += S.cham*fxEUR*n;
+      c.food += lerp(80,100,dayFood)*fxEUR*DPM*n;
+      c.education += 100*n;            // distance-ed materials
+    }
+    function melbMonths(n){
+      c.accommodation += lerp(3250,4333,dayAcc)*n;
+      c.food += lerp(80,100,dayFood)*DPM*n;
+    }
+    function travelLeg(months, accomAUD, foodDay, eur){
+      var a = eur ? accomAUD*fxEUR : accomAUD;
+      var f = eur ? foodDay*fxEUR : foodDay;
+      c.accommodation += a*months;
+      c.food += f*DPM*months;
+    }
+
+    var name, sub, color, insAnnual=2000;
+
+    if(id==="A"){
+      name="Scenario A · New Zealand"; sub="Relocate to Queenstown for 12 months";
+      color="var(--A)";
+      nzMonths(12);
+      c.relocation = 6000 + 4500;                 // car depreciation + removal
+      c.flights = 3*625*fl;                        // trans-Tasman return allowance
+      c.visas = 0;
+    } else if(id==="B"){
+      name="Scenario B · Travel year"; sub="Mexico → Canada → France → Georgia";
+      color="var(--B)"; insAnnual=3000;
+      travelLeg(3, lerp(2000,2600,dayAcc), lerp(50,70,dayFood), false); // Mexico
+      travelLeg(2, lerp(4000,5500,dayAcc), lerp(80,100,dayFood), false);// Canada
+      travelLeg(3, lerp(4000,5000,dayAcc), lerp(80,100,dayFood), true); // France
+      travelLeg(4, lerp(1000,1400,dayAcc), lerp(40,50,dayFood), false); // Georgia
+      c.education = 100*12;                         // distance ed all year
+      c.flights = 3*4600*fl;                        // round-the-world tickets
+      c.relocation = 1500;                          // pre-departure meds stockpile
+      c.visas = (20*2)/S.audeur + 7;                // ETIAS x2 adults + Canada eTA
+    } else if(id==="C"){
+      name="Scenario C · NZ + Chamonix"; sub="Queenstown 10 mo + Chamonix ski Jan–Feb";
+      color="var(--C)";
+      nzMonths(10); chamMonths(2);
+      c.relocation = 6000 + 4500;
+      c.flights = 3*625*fl + 3*2300*fl;             // trans-Tasman + NZ→Europe return
+      c.visas = (20*2)/S.audeur;
+    } else { // D
+      name="Scenario D · Melbourne + Chamonix"; sub="Melbourne base 10 mo + Chamonix Jan–Feb";
+      color="var(--D)";
+      melbMonths(10); chamMonths(2);
+      c.relocation = 1500;                          // light local move
+      c.flights = 3*2300*fl;                        // Australia→Europe return
+      c.visas = (20*2)/S.audeur;
+    }
+
+    // common monthly lines across all 12 months
+    c.medications = medsMo*12;
+    c.storage = storMo*12;
+    c.insurance = insAnnual;
+    c.unforeseen = unfMo*12;
+
+    var total=0; for(var k in c) total+=c[k];
+    var oneoff = c.flights + c.relocation + c.visas;
+    return {id:id, name:name, sub:sub, color:color, cats:c,
+            total:total, oneoff:oneoff, recurring:total-oneoff, accom:c.accommodation};
+  }
+
+  var IDS=["A","B","C","D"];
+  var labels={
+    accommodation:"Accommodation", food:"Food &amp; daily living",
+    carTransport:"Car · fuel &amp; rego", flights:"Flights",
+    relocation:"Relocation &amp; setup", medications:"Medications · Mounjaro",
+    insurance:"Travel insurance", storage:"AU storage",
+    education:"Schooling · distance ed", visas:"Visas &amp; permits",
+    unforeseen:"Unforeseen buffer"
+  };
+  var catColors={
+    accommodation:"#CC785C", food:"#5B7FA6", carTransport:"#4F8A7B",
+    flights:"#8A6FA8", relocation:"#C9A23F", medications:"#B0573A",
+    insurance:"#7B8A6F", storage:"#A78A7A", education:"#6F9AA8",
+    visas:"#B98FB0", unforeseen:"#9A988F"
+  };
+
+  var selected="C";
+
+  function fmt$(n){
+    return "$"+Math.round(n).toLocaleString("en-AU");
+  }
+
+  // ---- Build sliders ----
+  var driversEl=document.getElementById("drivers");
+  driverDefs.forEach(function(d){
+    var wrap=document.createElement("div"); wrap.className="driver";
+    wrap.innerHTML='<div class="dlab"><span class="dname">'+d.name+'</span>'+
+      '<span class="dval" id="dv-'+d.key+'"></span></div>'+
+      '<input type="range" id="dr-'+d.key+'" min="'+d.min+'" max="'+d.max+'" step="'+d.step+'" value="'+S[d.key]+'">'+
+      '<div class="dhint">'+d.hint+'</div>';
+    driversEl.appendChild(wrap);
+    var input=wrap.querySelector("input");
+    input.addEventListener("input",function(){
+      S[d.key]=parseFloat(input.value);
+      render();
+    });
+  });
+
+  function syncSliders(){
+    driverDefs.forEach(function(d){
+      var input=document.getElementById("dr-"+d.key);
+      input.value=S[d.key];
+      var pct=(S[d.key]-d.min)/(d.max-d.min)*100;
+      input.style.setProperty("--fill",pct+"%");
+      document.getElementById("dv-"+d.key).innerHTML=d.fmt(S[d.key]);
+    });
+  }
+
+  document.getElementById("reset").addEventListener("click",function(){
+    S=Object.assign({},defaults); render();
+  });
+
+  // ---- Build tabs ----
+  var tabsEl=document.getElementById("tabs");
+  IDS.forEach(function(id){
+    var m=model(id);
+    var t=document.createElement("button");
+    t.className="tab"; t.setAttribute("role","tab"); t.dataset.id=id;
+    t.innerHTML='<span class="tdot" style="background:'+m.color+'"></span>'+
+      '<span><span class="tname">'+m.name.split(" · ")[1]+'</span>'+
+      '<span class="tdesc">'+m.sub+'</span>'+
+      '<span class="ttot" id="tt-'+id+'" style="color:'+m.color+'"></span></span>';
+    t.addEventListener("click",function(){selected=id;render();});
+    tabsEl.appendChild(t);
+  });
+
+  // ---- Render ----
+  function render(){
+    syncSliders();
+    document.getElementById("chip-eur").textContent=S.audeur.toFixed(3);
+    document.getElementById("chip-nzd").textContent=S.audnzd.toFixed(3);
+
+    var models={}; IDS.forEach(function(id){models[id]=model(id);});
+    var maxTotal=Math.max.apply(null,IDS.map(function(id){return models[id].total;}));
+    var cheap=IDS.reduce(function(a,b){return models[a].total<models[b].total?a:b;});
+    var exp=IDS.reduce(function(a,b){return models[a].total>models[b].total?a:b;});
+
+    // tabs
+    IDS.forEach(function(id){
+      var tab=tabsEl.querySelector('[data-id="'+id+'"]');
+      tab.setAttribute("aria-selected", id===selected ? "true":"false");
+      document.getElementById("tt-"+id).textContent=fmt$(models[id].total)+" · 12 mo";
+    });
+
+    var m=models[selected];
+
+    // hero
+    document.getElementById("hero-dot").style.background=m.color;
+    document.getElementById("hero-name").textContent=m.name;
+    document.getElementById("hero-sub").textContent=m.sub;
+    document.getElementById("s-total").textContent=fmt$(m.total);
+    document.getElementById("s-monthly").textContent=fmt$(m.total/12);
+    document.getElementById("s-daily").textContent=fmt$(m.total/DPY);
+    document.getElementById("s-pp").textContent=fmt$(m.total/DPY/3);
+    document.getElementById("s-acc").textContent=Math.round(m.accom/m.total*100)+"%";
+
+    document.getElementById("v-cheap").innerHTML="Cheapest · <b>"+models[cheap].name.split(" · ")[1]+"</b> "+fmt$(models[cheap].total);
+    document.getElementById("v-exp").innerHTML="Dearest · <b>"+models[exp].name.split(" · ")[1]+"</b> "+fmt$(models[exp].total);
+    document.getElementById("v-spread").innerHTML="Spread · <b>"+fmt$(models[exp].total-models[cheap].total)+"</b> across scenarios";
+
+    // comparison
+    var cmp=document.getElementById("cmp"); cmp.innerHTML="";
+    IDS.forEach(function(id){
+      var mm=models[id];
+      var row=document.createElement("div");
+      row.className="cmp-row"+(id===selected?"":" dim");
+      row.innerHTML='<div class="cmp-top"><span class="cmp-name"><span class="dot" style="width:10px;height:10px;background:'+mm.color+'"></span>'+mm.name.split(" · ")[1]+'</span>'+
+        '<span class="cmp-val">'+fmt$(mm.total)+'</span></div>'+
+        '<div class="cmp-track"><div class="cmp-fill" style="width:'+(mm.total/maxTotal*100)+'%;background:'+mm.color+'"></div></div>';
+      row.addEventListener("click",function(){selected=id;render();});
+      cmp.appendChild(row);
+    });
+
+    // breakdown
+    document.getElementById("bd-title").textContent="Where the money goes";
+    document.getElementById("bd-note").textContent=m.name.split(" · ")[1];
+    var bd=document.getElementById("breakdown"); bd.innerHTML="";
+    var rows=Object.keys(m.cats).map(function(k){return {k:k,v:m.cats[k]};})
+      .filter(function(r){return r.v>0.5;})
+      .sort(function(a,b){return b.v-a.v;});
+    var maxCat=rows[0].v;
+    rows.forEach(function(r){
+      var row=document.createElement("div"); row.className="bd-row";
+      row.innerHTML='<div class="bd-top"><span class="bd-name"><span class="sq" style="background:'+catColors[r.k]+'"></span>'+labels[r.k]+'</span>'+
+        '<span class="bd-amt">'+fmt$(r.v)+'<span class="pc">'+Math.round(r.v/m.total*100)+'%</span></span></div>'+
+        '<div class="bd-track"><div class="bd-fill" style="width:'+(r.v/maxCat*100)+'%;background:'+catColors[r.k]+'"></div></div>';
+      bd.appendChild(row);
+    });
+
+    // ratios
+    document.getElementById("r-daily").textContent=fmt$(m.total/DPY);
+    document.getElementById("r-pp").textContent=fmt$(m.total/DPY/3);
+    document.getElementById("r-house").textContent=Math.round(m.accom/m.total*100)+"%";
+    var recPc=m.recurring/m.total*100;
+    document.getElementById("split-rec").style.width=recPc+"%";
+    document.getElementById("split-one").style.width=(100-recPc)+"%";
+    document.getElementById("leg-rec").innerHTML="Recurring "+Math.round(recPc)+"% · "+fmt$(m.recurring);
+    document.getElementById("leg-one").innerHTML=fmt$(m.oneoff)+" · "+Math.round(100-recPc)+"% one-off";
+    var delta=m.total-models[cheap].total;
+    document.getElementById("r-delta").textContent= delta<1 ? "Floor" : "+"+fmt$(delta);
+    document.getElementById("r-delta-sub").textContent= id_is_cheap(m.id,cheap) ? "this is the cheapest scenario" : "premium over "+models[cheap].name.split(" · ")[1];
+  }
+  function id_is_cheap(id,cheap){return id===cheap;}
+
+  render();
+})();
+</script>
+</body>
+</html>
