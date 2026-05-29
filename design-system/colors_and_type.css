@@ -1,0 +1,181 @@
+/* ============================================================
+   SCENARIO THREE / STEVEN GREEN CA — COLOR & TYPE FOUNDATIONS
+   Antipodean palette: forest #2E4034 + sage #748C7F on white.
+   Cabinet Grotesk (display) + Satoshi (body) — via Fontshare.
+   Pearl-inspired: large radii, pill buttons, two-tone headlines.
+   ------------------------------------------------------------
+   Fonts load from the Fontshare CDN, exactly as the live site does.
+   (Cabinet Grotesk + Satoshi are free under the ITF Font Licence;
+   they cannot be fetched into this project from the build sandbox,
+   so we reference the CDN. Self-host later if your licence permits —
+   drop woff2 into fonts/ and swap the @import for @font-face.)
+   ============================================================ */
+
+@import url("https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&f[]=satoshi@300,400,500,700&display=swap");
+
+:root{
+  /* ===================== COLOR ===================== */
+  /* Ground */
+  --s3-bg:        #FFFFFF;   /* page ground — white, not paper */
+  --s3-card:      #F7F8F5;   /* warm-cool card surface */
+  --s3-card-2:    #F1F3EE;   /* deeper card / hover surface */
+  --s3-sage-tint: #EAF0EA;   /* soft green wash — interludes, panels */
+
+  /* Brand greens */
+  --s3-forest:      #2E4034; /* PRIMARY brand AND primary text colour */
+  --s3-forest-dark: #243228; /* hover / deeper forest */
+  --s3-ink:         #0E1410; /* true near-black — used sparingly (inputs) */
+  --s3-sage:        #748C7F; /* secondary brand — accents, eyebrows, rules */
+  --s3-sage-2:      #9DAFA4; /* lighter sage */
+
+  /* Text */
+  --s3-muted:     #6B7570;   /* secondary body text */
+  --s3-hush:      #A8B2AC;   /* muted-2 — the "hi-muted" half of headlines */
+
+  /* Lines */
+  --s3-rule:      #E5E8E3;   /* hairline rules, borders */
+  --s3-rule-soft: #F0F2EE;   /* faintest divider */
+
+  /* Functional (for newsletter data / diagrams — kept subtle, on-brand) */
+  --s3-positive:  #3E6B4F;   /* up / gain */
+  --s3-negative:  #B3413A;   /* down / loss / form error */
+  --s3-caution:   #B0883C;   /* watch */
+
+  /* Categorical chart palette (financial diagrams sit on white) */
+  --s3-cat-1: #2E4034;  /* forest */
+  --s3-cat-2: #748C7F;  /* sage */
+  --s3-cat-3: #9DAFA4;  /* light sage */
+  --s3-cat-4: #B0883C;  /* ochre */
+  --s3-cat-5: #6B7570;  /* slate-grey */
+  --s3-cat-6: #C4D0C7;  /* pale */
+
+  /* On-forest inversions (dark sections, covers, LinkedIn) */
+  --s3-on-forest:        #FFFFFF;
+  --s3-on-forest-muted:  #A8B2AC;
+  --s3-on-forest-rule:   rgba(255,255,255,0.16);
+
+  /* ===================== TYPE FAMILIES ===================== */
+  --s3-display: "Cabinet Grotesk", -apple-system, "Segoe UI", sans-serif; /* headlines, brand */
+  --s3-sans:    "Satoshi", -apple-system, "Helvetica Neue", Arial, sans-serif; /* body, UI, labels */
+  --s3-body:    var(--s3-sans);
+  /* Back-compat aliases (older files referenced these) */
+  --s3-serif:   var(--s3-display);
+  --s3-mono:    "Satoshi", ui-monospace, monospace; /* brand has no mono; figures use Satoshi tabular */
+
+  /* ===================== TYPE SCALE ===================== */
+  /* Display ramp — Cabinet Grotesk, tight tracking, two-tone via spans */
+  --s3-fs-hero:    clamp(44px, 8vw, 104px);  --s3-lh-hero: 0.96;  --s3-ls-hero: -0.03em;
+  --s3-fs-h1:      clamp(40px, 7vw, 92px);   --s3-lh-h1:   0.98;  --s3-ls-h1:   -0.03em;
+  --s3-fs-h2:      clamp(32px, 4.6vw, 60px); --s3-lh-h2:   1.04;  --s3-ls-h2:   -0.025em;
+  --s3-fs-h3:      clamp(20px, 2.2vw, 26px); --s3-lh-h3:   1.18;  --s3-ls-h3:   -0.012em;
+  /* Body — Satoshi */
+  --s3-fs-lead:    clamp(17px, 1.4vw, 19px); --s3-lh-lead: 1.55;
+  --s3-fs-body:    16px;   --s3-lh-body:  1.6;
+  --s3-fs-small:   14.5px; --s3-lh-small: 1.55;
+  /* Eyebrow — sentence-case meta, Satoshi 500 */
+  --s3-fs-eyebrow: 13px;   --s3-ls-eyebrow: 0.005em;
+  /* Cap-title — wide-tracked uppercase section label (sage-underlined) */
+  --s3-fs-captitle: 14px;  --s3-ls-captitle: 0.22em;
+  /* Numbered index ("01"), Satoshi 600, sage */
+  --s3-fs-index:   12.5px; --s3-ls-index: 0.05em;
+
+  /* ===================== SPACING (4px base) ===================== */
+  --s3-1: 4px;  --s3-2: 8px;  --s3-3: 12px; --s3-4: 16px; --s3-5: 20px;
+  --s3-6: 24px; --s3-8: 32px; --s3-10: 40px; --s3-12: 48px; --s3-16: 64px;
+  --s3-20: 80px; --s3-24: 96px; --s3-32: 128px;
+  --s3-pad: clamp(20px, 4vw, 56px);   /* section inline padding */
+  --s3-section: clamp(72px, 10vw, 140px); /* section vertical rhythm */
+
+  /* ===================== RADII (generous / Pearl) ===================== */
+  --s3-r-sm:   12px;   /* inputs, small chips */
+  --s3-r-md:   20px;   /* timeline steps, medium */
+  --s3-r-lg:   24px;   /* cards, tiles */
+  --s3-r-xl:   28px;   /* forms, large panels */
+  --s3-r-pill: 999px;  /* buttons, tags */
+
+  /* ===================== SHADOWS (barely-there) ===================== */
+  /* The system leans on surface-shift + lift, not shadow. */
+  --s3-shadow-hover: 0 2px 4px rgba(46,64,52,0.05);
+  --s3-shadow-card:  0 1px 2px rgba(46,64,52,0.04);
+  --s3-shadow-lg:    0 24px 60px -24px rgba(36,50,40,0.22);
+
+  /* ===================== MOTION ===================== */
+  --s3-ease: cubic-bezier(0.22, 1, 0.36, 1);  /* smooth ease-out, no bounce */
+  --s3-dur-fast: 180ms;
+  --s3-dur: 240ms;
+  --s3-dur-slow: 700ms;   /* reveal-on-scroll */
+
+  /* Layout */
+  --s3-max: 1280px;
+  --s3-header-h: 72px;
+}
+
+/* ============================================================
+   SEMANTIC HELPERS  (add class "s3" to a root to opt in)
+   ============================================================ */
+.s3{
+  background: var(--s3-bg);
+  color: var(--s3-forest);
+  font-family: var(--s3-sans);
+  font-size: var(--s3-fs-body);
+  line-height: var(--s3-lh-body);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Display headings — Cabinet Grotesk */
+.s3 h1, .s3 .h1{ font-family:var(--s3-display); font-weight:700; font-size:var(--s3-fs-h1);
+  line-height:var(--s3-lh-h1); letter-spacing:var(--s3-ls-h1); color:var(--s3-forest); margin:0; text-wrap:balance; }
+.s3 .hero-h{ font-size:var(--s3-fs-hero); line-height:var(--s3-lh-hero); letter-spacing:var(--s3-ls-hero); font-weight:700; }
+.s3 h2, .s3 .h2{ font-family:var(--s3-display); font-weight:700; font-size:var(--s3-fs-h2);
+  line-height:var(--s3-lh-h2); letter-spacing:var(--s3-ls-h2); color:var(--s3-forest); margin:0; text-wrap:balance; }
+.s3 h3, .s3 .h3{ font-family:var(--s3-display); font-weight:700; font-size:var(--s3-fs-h3);
+  line-height:var(--s3-lh-h3); letter-spacing:var(--s3-ls-h3); color:var(--s3-forest); margin:0; }
+
+/* Two-tone headline split — the Pearl signature */
+.s3 .hi-strong{ color:var(--s3-forest); }
+.s3 .hi-muted{ color:var(--s3-hush); }
+
+/* Body */
+.s3 p{ margin:0; line-height:1.6; color:var(--s3-muted); text-wrap:pretty; }
+.s3 .lead{ font-size:var(--s3-fs-lead); line-height:var(--s3-lh-lead); color:var(--s3-muted); }
+
+/* Eyebrow — sentence-case meta with sage dot */
+.s3 .eyebrow{ font-family:var(--s3-sans); font-size:var(--s3-fs-eyebrow); font-weight:500;
+  letter-spacing:var(--s3-ls-eyebrow); color:var(--s3-muted); margin:0; }
+.s3 .eyebrow .dot{ color:var(--s3-sage); margin:0 6px; }
+
+/* Cap-title — wide-tracked uppercase section label, sage underline */
+.s3 .cap-title{ display:inline-block; font-family:var(--s3-sans); font-weight:700;
+  font-size:var(--s3-fs-captitle); letter-spacing:var(--s3-ls-captitle); text-transform:uppercase;
+  color:var(--s3-forest); border-bottom:3px solid var(--s3-sage); padding-bottom:10px; width:fit-content; }
+
+/* Numbered index */
+.s3 .index{ font-family:var(--s3-sans); font-weight:600; font-size:var(--s3-fs-index);
+  letter-spacing:var(--s3-ls-index); color:var(--s3-sage); }
+
+/* Figures — Satoshi with tabular numerals (brand has no mono) */
+.s3 .num, .s3 .data{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; }
+
+/* Links */
+.s3 a{ color:inherit; text-decoration:none; transition:color var(--s3-dur-fast) var(--s3-ease); }
+.s3 a:hover{ color:var(--s3-sage); }
+
+/* Buttons */
+.s3 .btn{ display:inline-flex; align-items:center; gap:8px; font-family:var(--s3-sans); font-weight:600;
+  font-size:14.5px; cursor:pointer; border:none; text-decoration:none;
+  transition:background-color var(--s3-dur) var(--s3-ease), color var(--s3-dur) var(--s3-ease), transform var(--s3-dur-fast) var(--s3-ease), border-color var(--s3-dur) var(--s3-ease); }
+.s3 .btn-pill{ background:var(--s3-forest); color:var(--s3-bg); padding:11px 20px 11px 22px; border-radius:var(--s3-r-pill); }
+.s3 .btn-pill:hover{ background:var(--s3-forest-dark); transform:translateY(-1px); }
+.s3 .btn-ghost{ background:transparent; color:var(--s3-forest); border:1.5px solid var(--s3-forest); }
+.s3 .btn-ghost:hover{ background:var(--s3-forest); color:var(--s3-bg); transform:translateY(-1px); }
+.s3 .btn-lg{ font-size:16px; padding:15px 28px; }
+.s3 .btn .ar{ transition:transform 220ms var(--s3-ease); }
+.s3 .btn:hover .ar{ transform:translate(2px,-2px); }
+
+/* Card */
+.s3 .card{ background:var(--s3-card); border-radius:var(--s3-r-lg); padding:clamp(24px,2.6vw,34px);
+  transition:background-color var(--s3-dur) var(--s3-ease), transform var(--s3-dur) var(--s3-ease); }
+.s3 .card:hover{ background:var(--s3-card-2); transform:translateY(-2px); }

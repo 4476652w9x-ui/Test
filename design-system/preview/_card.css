@@ -1,0 +1,16 @@
+@import url("../colors_and_type.css");
+*{box-sizing:border-box;}
+html,body{margin:0;}
+body{
+  background:var(--s3-bg);
+  color:var(--s3-forest);
+  font-family:var(--s3-sans);
+  width:700px;
+}
+.wrap{ padding:26px 28px; }
+.cap{ font-family:var(--s3-sans); font-weight:700; font-size:12px; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--s3-sage); margin:0 0 16px; }
+.swatch-row{ display:flex; gap:0; }
+.sw{ flex:1; height:84px; display:flex; flex-direction:column; justify-content:flex-end; padding:9px 11px; }
+.sw .hex{ font-family:var(--s3-sans); font-weight:500; font-size:11px; font-variant-numeric:tabular-nums; }
+.sw .nm{ font-family:var(--s3-sans); font-size:10px; letter-spacing:0.03em; opacity:.78; margin-bottom:2px; }

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scenario Three — Newsletter issue (template)</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{background:#E9ECE7;font-family:var(--s3-sans);padding:40px 20px;color:var(--s3-forest);}
+  .email{max-width:640px;margin:0 auto;background:var(--s3-bg);border-radius:24px;overflow:hidden;box-shadow:0 24px 60px -28px rgba(36,50,40,0.28);}
+  .pad{padding:40px 44px;}
+  .masthead{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--s3-rule);}
+  .masthead .wm{display:block;height:30px;width:auto;}
+  .meta{font-family:var(--s3-sans);font-size:12.5px;font-weight:500;color:var(--s3-muted);}
+  .meta .dot{color:var(--s3-sage);margin:0 6px;}
+  .eyebrow{font-size:13px;font-weight:500;color:var(--s3-muted);margin:0 0 18px;}
+  .eyebrow .dot{color:var(--s3-sage);margin:0 7px;}
+  h1{font-family:var(--s3-display);font-weight:700;font-size:38px;line-height:1.04;letter-spacing:-0.025em;color:var(--s3-forest);margin:0 0 22px;text-wrap:balance;}
+  h1 .hi-muted{color:var(--s3-hush);}
+  p{font-family:var(--s3-sans);font-size:16.5px;line-height:1.62;color:var(--s3-forest);margin:0 0 18px;}
+  p.muted{color:var(--s3-muted);}
+  .cap-title{display:inline-block;font-family:var(--s3-sans);font-weight:700;font-size:13px;letter-spacing:0.22em;text-transform:uppercase;color:var(--s3-forest);border-bottom:3px solid var(--s3-sage);padding-bottom:9px;margin:34px 0 22px;}
+  .pullbox{background:var(--s3-card);border-radius:20px;padding:24px 26px;margin:26px 0;}
+  .pullbox .row{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--s3-sans);font-variant-numeric:tabular-nums;font-size:16px;padding:9px 0;border-top:1px solid var(--s3-rule);}
+  .pullbox .row:first-child{border-top:none;}
+  .pullbox .row .k{color:var(--s3-muted);}
+  .pullbox .row .v{font-weight:600;color:var(--s3-forest);}
+  .pullbox .row .v.up{color:var(--s3-positive);}
+  .pullbox .row .v.dn{color:var(--s3-negative);}
+  blockquote{margin:26px 0;padding-left:22px;border-left:2px solid var(--s3-sage);font-family:var(--s3-display);font-style:italic;font-weight:400;font-size:23px;line-height:1.34;letter-spacing:-0.012em;color:var(--s3-forest);}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--s3-sans);font-weight:600;font-size:15px;background:var(--s3-forest);color:#fff;padding:13px 24px;border-radius:999px;text-decoration:none;}
+  .foot{background:var(--s3-card);border-top:1px solid var(--s3-rule);text-align:center;}
+  .foot p{font-size:12.5px;color:var(--s3-muted);margin:0 0 6px;}
+  .foot a{color:var(--s3-forest);}
+</style>
+</head>
+<body>
+  <div class="email">
+    <div class="pad masthead">
+      <img class="wm" src="../../assets/logo-tight.svg" alt="Scenario Three">
+      <span class="meta">Issue 14 <span class="dot">&middot;</span> Weekly</span>
+    </div>
+    <div class="pad">
+      <p class="eyebrow">Decision 04 <span class="dot">&middot;</span> Pricing model</p>
+      <h1>Your agreed daily rate is a margin decision.<span class="hi-muted"> Most firms set it like a salary calculation.</span></h1>
+      <p>The agreed daily rate is the single number a professional-services firm touches most often and reasons about least. It is set once, indexed to wages, and quietly carried for years &mdash; long after the cost base, the leverage and the recoverability behind it have moved.</p>
+      <p>Run it the other way. Start from a target margin, layer in raw versus effective cost by FTE band, apply your real recoverability, and the daily rate falls out as an <em>output</em>, not an input.</p>
+
+      <p class="cap-title">The maths, one firm</p>
+      <div class="pullbox">
+        <div class="row"><span class="k">Effective cost / day (Manager)</span><span class="v">$640</span></div>
+        <div class="row"><span class="k">Target margin</span><span class="v">34.0%</span></div>
+        <div class="row"><span class="k">Recoverability</span><span class="v dn">91.2%</span></div>
+        <div class="row"><span class="k">Implied agreed daily rate</span><span class="v up">$1,065</span></div>
+      </div>
+      <p>The firm was charging $920. Not a pricing problem on the surface &mdash; a recoverability problem underneath it, hidden by a rate that was never derived from the cost it was meant to cover.</p>
+
+      <blockquote>Bookkeepers record the past. Controllers report the present. Pricing the work is a third seat.</blockquote>
+
+      <p class="muted">Next week: capacity strategy &mdash; utilisation targets by band, and the BD time you are quietly funding out of margin.</p>
+      <a class="btn" href="#">Read the full issue <span aria-hidden="true">&#8599;</span></a>
+    </div>
+    <div class="pad foot">
+      <p>Scenario Three &middot; written by Steven Green CA &middot; Australia</p>
+      <p>You&rsquo;re receiving this because you subscribed. <a href="#">Unsubscribe</a> &middot; <a href="#">View in browser</a></p>
+    </div>
+  </div>
+</body>
+</html>

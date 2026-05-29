@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steven Green CA — Website UI Kit</title>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&f[]=satoshi@300,400,500,700&display=swap">
+<link rel="stylesheet" href="site.css">
+<style>
+  /* Kit shell — the page scrolls inside one container so the sticky header behaves */
+  html, body { margin: 0; height: 100%; }
+  #kit-scroll { height: 100vh; overflow-y: auto; scroll-behavior: smooth; background: var(--bg); }
+  /* Reveal-on-scroll */
+  .js-reveal { opacity: 0; transform: translateY(14px); transition: opacity 700ms var(--ease), transform 700ms var(--ease); }
+  .js-reveal.in-view { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce){ .js-reveal{ opacity:1; transform:none; } }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="sections.jsx"></script>
+<script type="text/babel">
+const NAV = [
+  { id: "venn", label: "Practice" },
+  { id: "offer", label: "Offer" },
+  { id: "how", label: "How it runs" },
+  { id: "about", label: "About" },
+  { id: "contact", label: "Express interest" },
+];
+
+function App() {
+  const scrollRef = React.useRef(null);
+
+  const onNav = (e, id) => {
+    e.preventDefault();
+    const sc = document.getElementById("kit-scroll");
+    const target = document.getElementById(id);
+    if (!sc || !target) return;
+    const y = target.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - 64;
+    sc.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+  };
+
+  React.useEffect(() => {
+    const sc = document.getElementById("kit-scroll");
+    const io = new IntersectionObserver(
+      (es) => es.forEach((en) => en.isIntersecting && en.target.classList.add("in-view")),
+      { root: sc, threshold: 0.12 }
+    );
+    document.querySelectorAll(".js-reveal").forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <React.Fragment>
+      <Header links={NAV} onNav={onNav} />
+      <main id="main">
+        <Hero onNav={onNav} />
+        <div className="js-reveal"><Venn /></div>
+        <div className="js-reveal"><Offer /></div>
+        <div className="js-reveal"><Reckoner onNav={onNav} /></div>
+        <div className="js-reveal"><Exchange /></div>
+        <div className="js-reveal"><Eligibility /></div>
+        <div className="js-reveal"><Timeline /></div>
+        <div className="js-reveal"><About /></div>
+        <div className="js-reveal"><Contact /></div>
+      </main>
+      <Footer />
+    </React.Fragment>
+  );
+}
+
+// Mount inside the scroll container
+const shell = document.createElement("div");
+shell.id = "kit-scroll";
+document.getElementById("root").appendChild(shell);
+ReactDOM.createRoot(shell).render(<App />);
+</script>
+</body>
+</html>

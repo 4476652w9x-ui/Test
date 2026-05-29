@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scenario Three — The rate card is honest. The margin isn't.</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{background:#E9ECE7;font-family:var(--s3-sans);padding:44px 20px 80px;color:var(--s3-forest);}
+  .issue{max-width:720px;margin:0 auto;background:var(--s3-bg);border-radius:28px;overflow:hidden;box-shadow:0 28px 70px -30px rgba(36,50,40,0.3);}
+  .pad{padding:0 clamp(28px,6vw,64px);}
+
+  /* Masthead */
+  .masthead{display:flex;align-items:center;justify-content:space-between;padding:34px clamp(28px,6vw,64px);border-bottom:1px solid var(--s3-rule);}
+  .masthead img{display:block;height:30px;width:auto;}
+  .masthead .meta{font-family:var(--s3-sans);font-size:12.5px;font-weight:500;color:var(--s3-muted);}
+  .masthead .meta .dot{color:var(--s3-sage);margin:0 6px;}
+
+  /* Header block */
+  .head{padding-top:44px;}
+  .kicker{font-family:var(--s3-sans);font-weight:700;font-size:12.5px;letter-spacing:0.2em;text-transform:uppercase;color:var(--s3-sage);margin:0 0 22px;}
+  h1{font-family:var(--s3-display);font-weight:700;font-size:clamp(38px,6vw,54px);line-height:1.0;letter-spacing:-0.03em;margin:0 0 22px;text-wrap:balance;}
+  h1 .a{color:var(--s3-hush);}
+  h1 .b{color:var(--s3-forest);}
+  .deck{font-family:var(--s3-display);font-weight:600;font-size:clamp(20px,2.4vw,24px);line-height:1.25;letter-spacing:-0.015em;color:var(--s3-forest);margin:0 0 18px;}
+  .standfirst{font-family:var(--s3-sans);font-style:italic;font-size:18px;line-height:1.55;color:var(--s3-muted);margin:0 0 6px;}
+  .byline{display:flex;align-items:center;gap:10px;margin:26px 0 6px;font-family:var(--s3-sans);font-size:13px;color:var(--s3-muted);}
+  .byline .av{width:30px;height:30px;border-radius:999px;background:var(--s3-forest);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:12px;letter-spacing:0.02em;}
+  .rule{border:0;border-top:1px solid var(--s3-rule);margin:34px 0;}
+
+  /* Body */
+  h2{font-family:var(--s3-display);font-weight:700;font-size:clamp(26px,3.2vw,32px);line-height:1.08;letter-spacing:-0.022em;color:var(--s3-forest);margin:52px 0 16px;text-wrap:balance;}
+  h2 .fr{color:var(--s3-sage);font-weight:700;margin-right:4px;}
+  p{font-family:var(--s3-sans);font-size:17px;line-height:1.62;color:var(--s3-forest);margin:0 0 18px;}
+  p .mut{color:var(--s3-muted);}
+  em{font-style:italic;}
+
+  /* TL;DR / takeaways card */
+  .panel{background:var(--s3-card);border-radius:24px;padding:32px 34px;margin:32px 0;}
+  .panel .lbl{display:inline-block;font-family:var(--s3-sans);font-weight:700;font-size:12.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--s3-forest);border-bottom:3px solid var(--s3-sage);padding-bottom:9px;margin:0 0 18px;}
+  .panel p{font-size:16px;color:var(--s3-muted);margin:0 0 20px;}
+  .takeaways{list-style:none;margin:0;padding:0;counter-reset:t;display:flex;flex-direction:column;gap:16px;}
+  .takeaways li{display:grid;grid-template-columns:34px 1fr;gap:16px;align-items:start;counter-increment:t;}
+  .takeaways li::before{content:counter(t,decimal-leading-zero);font-family:var(--s3-sans);font-weight:600;font-size:14px;color:var(--s3-sage);font-variant-numeric:tabular-nums;padding-top:2px;}
+  .takeaways li p{margin:0;font-size:15.5px;line-height:1.5;color:var(--s3-forest);}
+
+  /* Pull quote */
+  blockquote{margin:30px 0;padding-left:24px;border-left:2px solid var(--s3-sage);font-family:var(--s3-display);font-style:italic;font-weight:400;font-size:clamp(22px,2.8vw,27px);line-height:1.34;letter-spacing:-0.012em;color:var(--s3-forest);}
+
+  /* Scope / aside note */
+  .aside{background:var(--s3-sage-tint);border-radius:20px;padding:24px 28px;margin:28px 0;}
+  .aside .t{font-family:var(--s3-sans);font-weight:700;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--s3-sage);margin:0 0 10px;}
+  .aside p{font-size:15.5px;line-height:1.55;color:var(--s3-forest);margin:0;}
+  .aside p.it{font-style:italic;color:var(--s3-muted);}
+
+  /* Bulleted list — sage dash markers */
+  ul.dash{list-style:none;margin:18px 0 22px;padding:0;display:flex;flex-direction:column;gap:14px;}
+  ul.dash li{position:relative;padding-left:26px;font-family:var(--s3-sans);font-size:16px;line-height:1.55;color:var(--s3-forest);}
+  ul.dash li::before{content:"";position:absolute;left:0;top:13px;width:13px;height:2px;background:var(--s3-sage);}
+  ul.dash li b{font-weight:600;}
+  ul.dash li .n{color:var(--s3-muted);}
+
+  /* ===== DIAGRAMS ===== */
+  .diagram{background:var(--s3-card);border-radius:20px;padding:28px 30px;margin:30px 0;}
+  .diagram .dtitle{font-family:var(--s3-sans);font-weight:700;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--s3-muted);margin:0 0 20px;}
+  .diagram .dfoot{font-family:var(--s3-sans);font-size:13px;font-style:italic;color:var(--s3-muted);margin:18px 0 0;line-height:1.45;}
+
+  /* Segmented bar */
+  .segbar{display:flex;height:34px;border-radius:8px;overflow:hidden;gap:3px;margin-bottom:20px;}
+  .segbar span{display:block;}
+  .leg{display:flex;flex-direction:column;gap:11px;}
+  .leg .row{display:grid;grid-template-columns:14px 150px 56px 1fr;gap:12px;align-items:center;font-family:var(--s3-sans);font-size:14px;}
+  .leg .row .sw{width:14px;height:14px;border-radius:4px;}
+  .leg .row .k{font-weight:600;color:var(--s3-forest);}
+  .leg .row .h{font-variant-numeric:tabular-nums;color:var(--s3-forest);font-weight:600;text-align:right;}
+  .leg .row .nt{color:var(--s3-muted);font-size:13px;}
+
+  /* Comparison bars */
+  .compare{display:flex;flex-direction:column;gap:22px;}
+  .crow .ct{font-family:var(--s3-sans);font-weight:700;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--s3-muted);margin:0 0 9px;}
+  .ctrack{display:flex;align-items:center;gap:16px;}
+  .ctrack .bar{position:relative;height:30px;border-radius:6px;background:var(--s3-sage-tint);overflow:hidden;}
+  .ctrack .bar .fill{position:absolute;left:0;top:0;bottom:0;background:var(--s3-forest);display:flex;align-items:center;padding-left:12px;color:#fff;font-family:var(--s3-sans);font-weight:600;font-size:12.5px;font-variant-numeric:tabular-nums;}
+  .ctrack .pct{font-family:var(--s3-display);font-weight:700;font-size:30px;color:var(--s3-forest);font-variant-numeric:tabular-nums;letter-spacing:-0.02em;min-width:84px;}
+  .ctrack .pct.dim{color:var(--s3-muted);}
+
+  /* Engagement P&L */
+  .pnl{border:1px solid var(--s3-rule);border-radius:18px;overflow:hidden;background:var(--s3-bg);}
+  .pnl .ph{display:flex;justify-content:space-between;align-items:baseline;padding:16px 22px;background:var(--s3-forest);color:#fff;flex-wrap:wrap;gap:6px;}
+  .pnl .ph .nm{font-family:var(--s3-display);font-weight:700;font-size:18px;letter-spacing:-0.01em;white-space:nowrap;}
+  .pnl .ph .st{font-family:var(--s3-sans);font-size:12.5px;color:var(--s3-sage-2);}
+  .pnl .pcols{display:grid;grid-template-columns:1fr 1fr;}
+  .pnl .pcol{padding:20px 22px;}
+  .pnl .pcol+.pcol{border-left:1px solid var(--s3-rule);}
+  .pnl .ch{font-family:var(--s3-sans);font-weight:700;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--s3-sage);margin:0 0 12px;}
+  .pnl .li{display:flex;justify-content:space-between;gap:14px;font-family:var(--s3-sans);font-size:14.5px;font-variant-numeric:tabular-nums;padding:6px 0;color:var(--s3-forest);}
+  .pnl .li .k{color:var(--s3-muted);white-space:nowrap;}
+  .pnl .li .v{white-space:nowrap;}
+  .pnl .li.tot{border-top:1px solid var(--s3-rule);margin-top:6px;padding-top:9px;font-weight:600;}
+  .pnl .li.big{font-weight:600;}
+  .pnl .li.big .v{color:var(--s3-negative);}
+  .pnl .trend{padding:18px 22px;border-top:1px solid var(--s3-rule);}
+  .pnl .trend .ch{margin-bottom:14px;}
+  .trow{display:grid;grid-template-columns:42px 1fr 92px;gap:12px;align-items:center;margin-bottom:9px;font-family:var(--s3-sans);font-size:13px;font-variant-numeric:tabular-nums;}
+  .trow .mo{color:var(--s3-muted);font-weight:600;letter-spacing:0.04em;}
+  .trow .tb{height:14px;border-radius:4px;background:var(--s3-sage-tint);overflow:hidden;}
+  .trow .tb i{display:block;height:100%;background:var(--s3-sage);}
+  .trow.act .tb i{background:var(--s3-negative);}
+  .trow .tv{color:var(--s3-forest);font-weight:600;text-align:right;}
+  .trow.act .tv{color:var(--s3-negative);}
+
+  /* Footer */
+  .foot{background:var(--s3-card);border-top:1px solid var(--s3-rule);text-align:center;padding:34px clamp(28px,6vw,64px);margin-top:48px;}
+  .foot .cta{display:inline-flex;align-items:center;gap:8px;font-family:var(--s3-sans);font-weight:600;font-size:15px;background:var(--s3-forest);color:#fff;padding:13px 24px;border-radius:999px;text-decoration:none;margin-bottom:22px;}
+  .foot p{font-size:12.5px;color:var(--s3-muted);margin:0 0 6px;}
+  .foot a.tl{color:var(--s3-forest);}
+</style>
+</head>
+<body>
+  <article class="issue">
+
+    <header class="masthead">
+      <img src="../../assets/logo-tight.svg" alt="Scenario Three">
+      <span class="meta">Issue 01 <span class="dot">&middot;</span> Pricing &amp; margin</span>
+    </header>
+
+    <div class="pad head">
+      <p class="kicker">Decision 04 &middot; Pricing model</p>
+      <h1><span class="a">The rate card is honest.</span> <span class="b">The margin isn&rsquo;t.</span></h1>
+      <p class="deck">Three system changes that get you to a gross margin you can defend.</p>
+      <p class="standfirst">Most professional-services firms set a price they understand and report a margin they don&rsquo;t. Here&rsquo;s how to fix the second number.</p>
+      <div class="byline"><span class="av">SG</span><span>Steven Green CA &middot; 6 min read</span></div>
+    </div>
+
+    <div class="pad">
+      <!-- TL;DR -->
+      <div class="panel">
+        <span class="lbl">TL;DR</span>
+        <p>The price is honest enough &mdash; it&rsquo;s printed on the rate card, written into the SOW, defended over the long lunch. What goes missing is the gross profit margin underneath it, because the cost base it&rsquo;s measured against is incomplete. Invisible hours &mdash; scope creep buried under a generic code, rework nobody logs, the two hours past the eight-hour cap &mdash; make the cost-per-engagement number look better than it is. Three system changes close the gap. None require a new platform.</p>
+        <ol class="takeaways">
+          <li><p>The rate card tells you the price, not the margin. Most firms can&rsquo;t explain their gross margin because they don&rsquo;t instrument the cost base it&rsquo;s calculated against.</p></li>
+          <li><p>Five timesheet codes &mdash; billable, non-billable scope, rework, internal, leave &mdash; with no catch-all bucket and no day-close without categorisation.</p></li>
+          <li><p>The &ldquo;standard day&rdquo; is fiction. Capture hours <em>worked</em> alongside hours <em>billed</em> and your utilisation denominator becomes honest for the first time.</p></li>
+          <li><p>Run an engagement-level P&amp;L monthly, not annually. Write-offs only fix themselves while the work is still warm.</p></li>
+          <li><p>With the data in place, gross margin stops being a story and leverage stops being a ratio you copy off last year&rsquo;s slide deck.</p></li>
+        </ol>
+      </div>
+
+      <!-- Scope note -->
+      <div class="aside">
+        <p class="t">A note on scope &middot; salaried firms</p>
+        <p>What follows assumes an employee-based outfit &mdash; people on payroll, paid a salary irrespective of hours worked. If your model is buying daily-rate contractors and reselling them at a margin, the cost mechanics are cleaner: you pay per day, the gap between rate buy and rate sell <em>is</em> the margin, and most of the lie is already priced in. The salaried-firm version is more interesting precisely because the cost is fixed and the data on how it gets spent is largely invisible.</p>
+      </div>
+
+      <h2>The price is honest enough.</h2>
+      <p>You print the rate card, you put it in the engagement letter, you defend it to the client over the long lunch. That number usually isn&rsquo;t the problem. Clients sign things. Partners agree daily rates. The price is the price.</p>
+      <p>The fiction is one layer down. The gross margin you book on the engagement &mdash; fees billed minus delivery cost, divided by fees &mdash; is calculated against a delivery-cost number that is almost always lower than reality. Between 5 and 25 percent of the actual cost to deliver never makes it onto the engagement P&amp;L. So the margin you report &mdash; the number you defend in the partner meeting, the number that drives next year&rsquo;s pricing calculator &mdash; is overstated by exactly that amount.</p>
+      <blockquote>It wasn&rsquo;t a tough engagement. You didn&rsquo;t know what it cost to deliver.</blockquote>
+
+      <h2>Hollywood worked this trick first.</h2>
+      <p><em>Forrest Gump</em> grossed close to $700 million at the box office and, on Paramount&rsquo;s books, made no profit. Not officially. The cost base was engineered &mdash; distribution fees, overhead allocations, interest on production loans paid to the studio by the studio &mdash; until the margin disappeared. &ldquo;Hollywood accounting&rdquo; is the term of art. A real margin lives somewhere; what lands on the page is theatre.</p>
+      <p>Professional services has the inverse problem. Hollywood inflates the cost base to make a real margin look like a loss. Most PS firms quietly under-count the cost base, and a real gross margin of, say, 32 percent shows up on the page as 41. Same mechanism, opposite direction. Same result: <span class="mut">the margin you report is not the margin you have.</span></p>
+
+      <h2>Three system changes. None exotic. All boring.</h2>
+      <p>That&rsquo;s the whole essay. You can stop reading and rebuild your timesheet now if you like. For everyone else, here are the three.</p>
+
+      <h2><span class="fr">1 /</span>Five codes. No &ldquo;general,&rdquo; no catch-alls.</h2>
+      <p>Every hour worked at your firm should land in exactly one of five categories, and the system should refuse to close the day without one chosen.</p>
+      <ul class="dash">
+        <li><b>Billable.</b> <span class="n">Maps to a client code, a phase of work, and a price.</span></li>
+        <li><b>Non-billable scope.</b> <span class="n">Hours on a live engagement that aren&rsquo;t billed. This is where most of the missing cost base lives.</span></li>
+        <li><b>Rework.</b> <span class="n">Hours redoing something already done. The most uncomfortable code to enter, which is the entire reason it has to exist.</span></li>
+        <li><b>Internal.</b> <span class="n">BD, training, mentoring, the partner Zoom about the partner Zoom. Necessary. Should be visible.</span></li>
+        <li><b>Leave.</b> <span class="n">Holidays, sick, public, the lot. The honest denominator.</span></li>
+      </ul>
+      <p>No &ldquo;engagement admin.&rdquo; No &ldquo;general.&rdquo; If a senior can&rsquo;t tell which code their hour belongs in, that&rsquo;s a one-line question to their manager, not a bucket they invent at 11pm to make the timesheet close. Five codes in, an honest cost base out.</p>
+
+      <!-- Diagram 1 -->
+      <div class="diagram">
+        <p class="dtitle">A senior&rsquo;s Tuesday &mdash; 10 hours worked</p>
+        <div class="segbar">
+          <span style="flex:6.5;background:#2E4034;"></span>
+          <span style="flex:1;background:#B0883C;"></span>
+          <span style="flex:1;background:#748C7F;"></span>
+          <span style="flex:0.5;background:#B3413A;"></span>
+          <span style="flex:1;background:#C4D0C7;"></span>
+        </div>
+        <div class="leg">
+          <div class="row"><span class="sw" style="background:#2E4034;"></span><span class="k">Billable</span><span class="h">6.5h</span><span class="nt"></span></div>
+          <div class="row"><span class="sw" style="background:#B0883C;"></span><span class="k">Non-billable scope</span><span class="h">1.0h</span><span class="nt">&ldquo;just finishing off&rdquo;</span></div>
+          <div class="row"><span class="sw" style="background:#748C7F;"></span><span class="k">Internal</span><span class="h">1.0h</span><span class="nt">BD + 1:1</span></div>
+          <div class="row"><span class="sw" style="background:#B3413A;"></span><span class="k">Rework</span><span class="h">0.5h</span><span class="nt"></span></div>
+          <div class="row"><span class="sw" style="background:#C4D0C7;"></span><span class="k">Leave</span><span class="h">1.0h</span><span class="nt">half-day Friday</span></div>
+        </div>
+        <p class="dfoot">Every hour ends up somewhere. A bad system lets four of them go dark.</p>
+      </div>
+
+      <h2><span class="fr">2 /</span>Capture the day actually worked.</h2>
+      <p>Your &ldquo;standard day&rdquo; is eight hours. Your actual day, in most engagements, in most weeks, is closer to ten. The two hours in the gap don&rsquo;t show up anywhere &mdash; not on the timesheet, not in the engagement P&amp;L, not in the utilisation report. They quietly subsidise the client.</p>
+      <p>The salary is fixed. Your senior is paid the same whether they worked eight hours or twelve. So the question isn&rsquo;t who paid for the extra two hours &mdash; the firm already did. The question is which engagement should have carried the cost. If the answer is &ldquo;none, the hours never existed,&rdquo; then every cost-per-hour calculation you run is light by the size of the gap, and the gross margin on the engagement that quietly absorbed those hours looks healthier than it has any right to.</p>
+      <p>The fix is a second column. Hours worked alongside hours billed, not affecting the invoice at all. The client invoice stays inside the cap; the internal data set tells the truth. Because utilisation is billable hours divided by hours <em>worked</em> &mdash; full stop. Not divided by &ldquo;standard hours.&rdquo;</p>
+
+      <!-- Diagram 2 -->
+      <div class="diagram">
+        <p class="dtitle">Same person, same six billable hours, same salary</p>
+        <div class="compare">
+          <div class="crow">
+            <p class="ct">The official view &middot; &ldquo;standard&rdquo; 8-hour day</p>
+            <div class="ctrack">
+              <div class="bar" style="flex:0.8;"><div class="fill" style="width:75%;">6 billable / 8 worked</div></div>
+              <span class="pct">75%</span>
+            </div>
+          </div>
+          <div class="crow">
+            <p class="ct">The honest view &middot; actual 10-hour day</p>
+            <div class="ctrack">
+              <div class="bar" style="flex:1;"><div class="fill" style="width:60%;">6 billable / 10 worked</div></div>
+              <span class="pct dim">60%</span>
+            </div>
+          </div>
+        </div>
+        <p class="dfoot">Two different stories about the margin. Pick the honest one &mdash; the other is the one the partner meeting wants to hear.</p>
+      </div>
+
+      <div class="aside">
+        <p class="t">Next week</p>
+        <p class="it">A deep dive on the two-hour gap &mdash; what it looks like from the employee&rsquo;s chair versus the owner&rsquo;s, why you need a written policy before you can have a real margin conversation, and what that policy actually says.</p>
+      </div>
+
+      <h2><span class="fr">3 /</span>Engagement P&amp;L monthly, not annually.</h2>
+      <p>Most firms run engagement profitability at year-end as a forensic exercise &mdash; the WIP gets written down, the partners shrug, the spreadsheet goes back in the drawer. Move it forward. Every engagement, every month, on one page: hours by code, fees billed, fees collected, write-down to date, recoverability. The partner sees it on the fifth of the following month, while the work is still warm.</p>
+      <p>The point isn&rsquo;t to catch people out. It&rsquo;s to catch the <em>engagement</em> out &mdash; early enough to do something. A recoverability number that has been 72 percent for three months running tells you something about the scope, the price, or the team. None of it is fixable in November if the work started in March.</p>
+
+      <!-- Diagram 3 -->
+      <div class="diagram" style="padding:0;background:transparent;">
+        <div class="pnl">
+          <div class="ph"><span class="nm">Project Atlas</span><span class="st">Partner: J. Smith &middot; April 2026 &middot; 60% done</span></div>
+          <div class="pcols">
+            <div class="pcol">
+              <p class="ch">Hours this month</p>
+              <div class="li"><span class="k">Billable</span><span class="v">142</span></div>
+              <div class="li"><span class="k">Non-billable scope</span><span class="v">28</span></div>
+              <div class="li"><span class="k">Rework</span><span class="v">14</span></div>
+              <div class="li"><span class="k">Internal</span><span class="v">8</span></div>
+              <div class="li"><span class="k">Leave</span><span class="v">6</span></div>
+              <div class="li tot"><span class="k">Total</span><span class="v">198</span></div>
+            </div>
+            <div class="pcol">
+              <p class="ch">Economics</p>
+              <div class="li"><span class="k">Fees billed</span><span class="v">$42,600</span></div>
+              <div class="li"><span class="k">Fees collected</span><span class="v">$42,600</span></div>
+              <div class="li"><span class="k">WIP write-down</span><span class="v">$11,800</span></div>
+              <div class="li big" style="margin-top:6px;border-top:1px solid var(--s3-rule);padding-top:9px;"><span class="k">Recoverability</span><span class="v">78% &darr;</span></div>
+            </div>
+          </div>
+          <div class="trend">
+            <p class="ch">Recoverability &middot; last 3 months</p>
+            <div class="trow"><span class="mo">Feb</span><span class="tb"><i style="width:95%;"></i></span><span class="tv">95%</span></div>
+            <div class="trow"><span class="mo">Mar</span><span class="tb"><i style="width:84%;"></i></span><span class="tv">84%</span></div>
+            <div class="trow act"><span class="mo">Apr</span><span class="tb"><i style="width:78%;"></i></span><span class="tv">78% &middot; act now</span></div>
+          </div>
+        </div>
+      </div>
+
+      <h2>What changes when you can see the work.</h2>
+      <p><b>Gross margin stops being a story.</b> The number on the page reflects what actually went into the engagement &mdash; so you can compare like-for-like, defend a price increase with data, and walk away from a proposal that was never going to make money.</p>
+      <p><b>Pricing stops being theatre.</b> A fixed-price proposal isn&rsquo;t a punt anymore; it&rsquo;s modelled against the cost shape of the last three things like it.</p>
+      <p><b>Capacity stops being aspirational.</b> Your &ldquo;75 percent utilised&rdquo; people might be 60 percent against an honest ten-hour day &mdash; and that changes who you hire next, and when.</p>
+      <p><b>Leverage stops being a ratio you copy off last year&rsquo;s slide deck.</b> It becomes a thing you can move on purpose.</p>
+
+      <h2>Write-offs aren&rsquo;t the enemy. They&rsquo;re the data.</h2>
+      <p>They&rsquo;re the cleanest data your firm produces, because nobody is trying to make them look good. The work is to see them sooner &mdash; early enough to do something with them while there&rsquo;s still an engagement, still a client, still a price worth defending.</p>
+      <blockquote>The rate card is honest. The margin underneath it doesn&rsquo;t have to be a story.</blockquote>
+    </div>
+
+    <footer class="foot">
+      <a class="cta" href="#">Forward this issue <span aria-hidden="true">&#8599;</span></a>
+      <p>Scenario Three &middot; written by Steven Green CA &middot; Australia</p>
+      <p>You&rsquo;re receiving this because you subscribed. <a class="tl" href="#">Unsubscribe</a> &middot; <a class="tl" href="#">View in browser</a></p>
+    </footer>
+
+  </article>
+</body>
+</html>

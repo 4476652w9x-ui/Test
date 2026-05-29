@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scenario Three — LinkedIn cards (template)</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{background:#E9ECE7;font-family:var(--s3-sans);padding:36px;color:var(--s3-forest);}
+  .rail{display:flex;gap:28px;flex-wrap:wrap;justify-content:center;}
+  .frame{width:340px;height:340px;border-radius:18px;overflow:hidden;box-shadow:0 20px 50px -24px rgba(36,50,40,0.3);}
+
+  /* ---- ONE rigid template for every card (1080x1080) ---- */
+  .card{position:relative;width:1080px;height:1080px;transform:scale(0.31481);transform-origin:top left;}
+  /* fixed zones — identical coordinates on every card */
+  .eyebrow{position:absolute;top:96px;left:96px;font-family:var(--s3-sans);font-weight:700;font-size:28px;letter-spacing:0.2em;text-transform:uppercase;margin:0;white-space:nowrap;}
+  .headline{position:absolute;top:404px;left:96px;right:200px;font-family:var(--s3-display);font-weight:700;font-size:80px;line-height:1.03;letter-spacing:-0.028em;margin:0;}
+  .headline .mut{display:inline;}
+  .meta{position:absolute;left:96px;bottom:104px;font-family:var(--s3-sans);font-weight:500;font-size:28px;margin:0;white-space:nowrap;}
+  .wm{position:absolute;right:96px;bottom:96px;height:52px;width:auto;}
+
+  /* ---- palette per card (positions never change) ---- */
+  .c-quote{background:var(--s3-forest);}
+  .c-quote .eyebrow{color:var(--s3-sage-2);}
+  .c-quote .headline{color:#fff;}
+  .c-quote .headline .mut{color:var(--s3-on-forest-muted);}
+  .c-quote .meta{color:var(--s3-on-forest-muted);}
+
+  .c-stat{background:var(--s3-bg);}
+  .c-stat .eyebrow{color:var(--s3-sage);}
+  .c-stat .headline{color:var(--s3-forest);font-weight:800;font-size:248px;line-height:0.86;letter-spacing:-0.04em;font-variant-numeric:tabular-nums;top:360px;}
+  .c-stat .meta{color:var(--s3-muted);right:200px;font-size:30px;line-height:1.4;font-weight:400;bottom:104px;max-width:760px;white-space:normal;}
+
+  .c-list{background:var(--s3-sage-tint);}
+  .c-list .eyebrow{color:var(--s3-sage);}
+  .c-list .headline{color:var(--s3-forest);}
+  .c-list .headline .mut{color:var(--s3-muted);}
+  .c-list .meta{color:var(--s3-muted);}
+</style>
+</head>
+<body>
+  <div class="rail">
+
+    <!-- 1 — Decision quote (forest) -->
+    <div class="frame"><div class="card c-quote">
+      <p class="eyebrow">Decision 03 &middot; Leverage</p>
+      <h2 class="headline">AI doesn&rsquo;t cut headcount.<span class="mut"> It reshapes the pyramid.</span></h2>
+      <p class="meta">Steven Green CA &middot; weekly</p>
+      <img class="wm" src="../../assets/logo-tight-reversed.svg" alt="Scenario Three">
+    </div></div>
+
+    <!-- 2 — Stat (white) -->
+    <div class="frame"><div class="card c-stat">
+      <p class="eyebrow">Leverage ratio</p>
+      <h2 class="headline">4.8&times;</h2>
+      <p class="meta">Junior-to-partner leverage at a 50-FTE consultancy &mdash; the number that quietly sets the firm&rsquo;s margin ceiling.</p>
+      <img class="wm" src="../../assets/logo-tight.svg" alt="Scenario Three">
+    </div></div>
+
+    <!-- 3 — Header line (sage tint) -->
+    <div class="frame"><div class="card c-list">
+      <p class="eyebrow">The seven decisions</p>
+      <h2 class="headline">Seven decisions that run a firm.<span class="mut"> One a week.</span></h2>
+      <p class="meta">Scenario Three &middot; weekly</p>
+      <img class="wm" src="../../assets/logo-tight.svg" alt="Scenario Three">
+    </div></div>
+
+  </div>
+</body>
+</html>
