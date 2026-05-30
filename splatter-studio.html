@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#181816" />
+<title>Splatter Studio — Fling Paint, Make Art</title>
+<style>
+  :root{
+    --bg:#F0EEE6;
+    --surface:#FAF9F5;
+    --card:#FFFFFF;
+    --ink:#181816;
+    --muted:#6F6E68;
+    --faint:#9A988F;
+    --line:#E6E1D5;
+    --clay:#CC785C;
+    --clay-dark:#B0573A;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --shadow:0 1px 2px rgba(40,33,20,.04),0 8px 26px rgba(40,33,20,.08);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;overscroll-behavior:none;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:20px 16px 56px}
+  h1{font-family:var(--serif);font-weight:600;letter-spacing:-.015em;margin:0}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--clay-dark);font-weight:600}
+
+  header{margin:4px 0 16px}
+  header h1{font-size:clamp(28px,7.5vw,44px);line-height:1.05;margin:8px 0 8px}
+  header p{margin:0;color:var(--muted);font-size:15px;max-width:62ch}
+
+  /* Canvas stage */
+  .stage{position:relative;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);
+    border:1px solid var(--line);background:#111;touch-action:none}
+  canvas{display:block;width:100%;height:auto;cursor:crosshair}
+  .hint{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
+    text-align:center;color:rgba(255,255,255,.55);font-size:15px;pointer-events:none;
+    font-family:var(--serif);letter-spacing:.01em;transition:opacity .4s;padding:0 20px}
+  .hint.gone{opacity:0}
+
+  /* Controls */
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    box-shadow:var(--shadow);padding:16px 16px 18px;margin-top:16px}
+  .row{display:flex;flex-wrap:wrap;gap:18px 26px;align-items:flex-end}
+
+  .swatches{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+  .sw{width:30px;height:30px;border-radius:50%;border:2px solid #fff;cursor:pointer;
+    box-shadow:0 0 0 1px var(--line),0 1px 3px rgba(40,33,20,.18);transition:transform .08s}
+  .sw:active{transform:scale(.9)}
+  .sw[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ink),0 1px 4px rgba(40,33,20,.25);transform:scale(1.08)}
+  .sw.rainbow{background:conic-gradient(from 0deg,#e5484d,#f5a524,#46a758,#0090ff,#8e4ec6,#e5484d)}
+  .sw.custom{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+    background:var(--surface);font-size:15px;color:var(--muted)}
+  .sw.custom input{position:absolute;inset:-6px;opacity:0;cursor:pointer}
+
+  .ctrl{min-width:150px;flex:1 1 150px;max-width:240px}
+  .ctrl .lab{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px}
+  .ctrl .name{font-size:13px;font-weight:600}
+  .ctrl .val{font-size:12.5px;font-weight:600;color:var(--clay-dark);font-variant-numeric:tabular-nums}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:24px;background:transparent;cursor:pointer;margin:0}
+  input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:6px;
+    background:linear-gradient(var(--clay),var(--clay)) no-repeat,var(--line);background-size:var(--fill,50%) 100%}
+  input[type=range]::-moz-range-track{height:6px;border-radius:6px;background:var(--line)}
+  input[type=range]::-moz-range-progress{height:6px;border-radius:6px;background:var(--clay)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;
+    border-radius:50%;background:#fff;border:2px solid var(--clay);box-shadow:0 1px 4px rgba(40,33,20,.22);margin-top:-7px}
+  input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid var(--clay);box-shadow:0 1px 4px rgba(40,33,20,.22)}
+
+  .seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:3px;gap:3px}
+  .seg button{border:0;background:transparent;color:var(--muted);font-family:var(--sans);
+    font-size:12.5px;font-weight:600;padding:7px 12px;border-radius:8px;cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field>.name{font-size:13px;font-weight:600}
+
+  .actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+  .btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);font-family:var(--sans);
+    font-size:13.5px;font-weight:600;padding:10px 15px;border-radius:11px;cursor:pointer;transition:transform .05s,background .15s}
+  .btn:active{transform:scale(.97)}
+  .btn.primary{background:var(--clay);border-color:var(--clay);color:#fff}
+  .btn.primary:hover{background:var(--clay-dark);border-color:var(--clay-dark)}
+  .btn.ghost{color:var(--muted)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .spacer{flex:1 1 auto}
+
+  footer{text-align:center;font-size:11.5px;color:var(--faint);margin-top:22px;line-height:1.5}
+
+  @media (max-width:560px){
+    .ctrl{max-width:none}
+    .row{gap:16px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Splatter Studio</div>
+    <h1>Fling paint. Make art.</h1>
+    <p>Click, drag, or flick across the canvas to throw paint. Speed adds spray; gravity pulls it into drips. Pick a colour, tune the splatter, and pour yourself something messy.</p>
+  </header>
+
+  <div class="stage">
+    <canvas id="c" width="1840" height="1100"></canvas>
+    <div class="hint" id="hint">Drag across the canvas to splatter →</div>
+  </div>
+
+  <div class="panel">
+    <div class="row">
+      <div class="field">
+        <span class="name">Colour</span>
+        <div class="swatches" id="swatches"></div>
+      </div>
+
+      <div class="ctrl">
+        <div class="lab"><span class="name">Blob size</span><span class="val" id="v-size">22 px</span></div>
+        <input type="range" id="s-size" min="6" max="70" step="1" value="22">
+      </div>
+
+      <div class="ctrl">
+        <div class="lab"><span class="name">Spread</span><span class="val" id="v-spread">Medium</span></div>
+        <input type="range" id="s-spread" min="20" max="240" step="1" value="110">
+      </div>
+
+      <div class="ctrl">
+        <div class="lab"><span class="name">Density</span><span class="val" id="v-density">14 drops</span></div>
+        <input type="range" id="s-density" min="2" max="48" step="1" value="14">
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:18px">
+      <div class="field">
+        <span class="name">Drip</span>
+        <div class="seg" id="seg-drip" role="group" aria-label="Drip amount">
+          <button data-v="0" aria-pressed="false">None</button>
+          <button data-v="1" aria-pressed="true">Subtle</button>
+          <button data-v="2" aria-pressed="false">Heavy</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="name">Backdrop</span>
+        <div class="seg" id="seg-bg" role="group" aria-label="Background colour">
+          <button data-v="#141413" aria-pressed="true">Charcoal</button>
+          <button data-v="#FAF9F5" aria-pressed="false">Paper</button>
+          <button data-v="#1B2A4A" aria-pressed="false">Midnight</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="splash">✦ Random splash</button>
+      <button class="btn ghost" id="undo" disabled>↶ Undo</button>
+      <div class="spacer"></div>
+      <button class="btn ghost" id="clear">Clear</button>
+      <button class="btn primary" id="save">↓ Save PNG</button>
+    </div>
+  </div>
+
+  <footer>
+    Splatter Studio · everything happens on the &lt;canvas&gt;, nothing leaves your device.<br>
+    Single self-contained HTML file · pointer + touch ready.
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var canvas = document.getElementById("c");
+  var ctx = canvas.getContext("2d");
+  var W = canvas.width, H = canvas.height;
+
+  // ---- State ----
+  var palette = ["#E5484D","#F5A524","#FFE234","#46A758","#0090FF","#8E4EC6","#FF66C4","#F4F0E6","#181816"];
+  var state = {
+    color: "#E5484D",
+    rainbow: false,
+    size: 22,
+    spread: 110,
+    density: 14,
+    drip: 1,            // 0 none, 1 subtle, 2 heavy
+    bg: "#141413"
+  };
+  var hue = 0;          // rolling hue for rainbow mode
+  var undoStack = [];   // canvas snapshots (cap'd)
+  var MAX_UNDO = 12;
+
+  // ---- Backdrop ----
+  function paintBackground(){
+    ctx.fillStyle = state.bg;
+    ctx.fillRect(0,0,W,H);
+  }
+  paintBackground();
+
+  // ---- Swatches ----
+  var swEl = document.getElementById("swatches");
+  function buildSwatches(){
+    palette.forEach(function(col){
+      var b = document.createElement("button");
+      b.className = "sw"; b.style.background = col;
+      b.setAttribute("aria-pressed", col===state.color && !state.rainbow ? "true":"false");
+      b.title = col;
+      b.addEventListener("click", function(){ pickColor(col); });
+      swEl.appendChild(b);
+    });
+    // rainbow
+    var rb = document.createElement("button");
+    rb.className = "sw rainbow"; rb.title = "Rainbow"; rb.dataset.rainbow = "1";
+    rb.setAttribute("aria-pressed", state.rainbow ? "true":"false");
+    rb.addEventListener("click", function(){ pickRainbow(); });
+    swEl.appendChild(rb);
+    // custom colour
+    var cu = document.createElement("label");
+    cu.className = "sw custom"; cu.title = "Custom colour"; cu.textContent = "+";
+    var input = document.createElement("input");
+    input.type = "color"; input.value = "#CC785C";
+    input.addEventListener("input", function(){ pickColor(input.value); });
+    cu.appendChild(input);
+    swEl.appendChild(cu);
+  }
+  function syncSwatches(){
+    Array.prototype.forEach.call(swEl.querySelectorAll(".sw"), function(b){
+      if(b.dataset.rainbow){ b.setAttribute("aria-pressed", state.rainbow?"true":"false"); return; }
+      if(b.classList.contains("custom")) return;
+      b.setAttribute("aria-pressed", (!state.rainbow && b.style.background && rgbMatch(b, state.color)) ? "true":"false");
+    });
+  }
+  function rgbMatch(el, hex){
+    // compare via the browser's normalised colour string
+    var probe = document.createElement("span"); probe.style.color = hex;
+    return el.style.backgroundColor === probe.style.color;
+  }
+  function pickColor(col){
+    state.color = col; state.rainbow = false; syncSwatches();
+  }
+  function pickRainbow(){
+    state.rainbow = true; syncSwatches();
+  }
+
+  // ---- Sliders ----
+  (function(){
+    var defs = [
+      {id:"s-size",  out:"v-size",   key:"size",   fmt:function(v){return Math.round(v)+" px";}},
+      {id:"s-spread",out:"v-spread", key:"spread", fmt:function(v){return v<70?"Tight":v>170?"Wide":"Medium";}},
+      {id:"s-density",out:"v-density",key:"density",fmt:function(v){return Math.round(v)+" drops";}}
+    ];
+    defs.forEach(function(d){
+      var el = document.getElementById(d.id);
+      var out = document.getElementById(d.out);
+      function fill(){ var p=(el.value-el.min)/(el.max-el.min)*100; el.style.setProperty("--fill",p+"%"); }
+      el.addEventListener("input", function(){
+        state[d.key] = parseFloat(el.value);
+        out.innerHTML = d.fmt(state[d.key]);
+        fill();
+      });
+      out.innerHTML = d.fmt(state[d.key]); fill();
+    });
+  })();
+
+  // ---- Segmented controls ----
+  function bindSeg(id, apply){
+    var grp = document.getElementById(id);
+    grp.addEventListener("click", function(e){
+      var btn = e.target.closest("button"); if(!btn) return;
+      Array.prototype.forEach.call(grp.querySelectorAll("button"), function(b){
+        b.setAttribute("aria-pressed", b===btn ? "true":"false");
+      });
+      apply(btn.dataset.v);
+    });
+  }
+  bindSeg("seg-drip", function(v){ state.drip = parseInt(v,10); });
+  bindSeg("seg-bg", function(v){
+    state.bg = v;
+    document.querySelector(".stage").style.background = v;
+    // repaint background behind existing art? -> start fresh feels cleaner
+    pushUndo();
+    paintBackground();
+  });
+
+  // ---- Geometry helpers ----
+  function rand(a,b){ return a + Math.random()*(b-a); }
+  function nextColor(){
+    if(!state.rainbow) return state.color;
+    hue = (hue + rand(8,22)) % 360;
+    return "hsl("+hue.toFixed(0)+",78%,58%)";
+  }
+
+  // Draw one organic blob (slightly irregular circle)
+  function blob(x, y, r, color, alpha){
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    var pts = 10, first = true;
+    for(var i=0;i<=pts;i++){
+      var a = (i/pts)*Math.PI*2;
+      var rr = r * rand(0.78, 1.18);
+      var px = x + Math.cos(a)*rr, py = y + Math.sin(a)*rr;
+      if(first){ ctx.moveTo(px,py); first=false; } else { ctx.lineTo(px,py); }
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // A drip: a thin tapering streak falling downward with a bead at the end
+  function drip(x, y, r, color){
+    var len = r * rand(2.2, 6.5) * (state.drip===2 ? 1.7 : 1);
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.globalAlpha = 0.85;
+    ctx.lineWidth = r * rand(0.18, 0.4);
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    var midx = x + rand(-r*0.25, r*0.25);
+    ctx.quadraticCurveTo(midx, y+len*0.5, x+rand(-r*0.15,r*0.15), y+len);
+    ctx.stroke();
+    ctx.restore();
+    blob(x+rand(-r*0.15,r*0.15), y+len, r*rand(0.22,0.4), color, 0.9); // bead
+  }
+
+  // ---- Core: throw paint at a point, with optional velocity ----
+  function splatter(x, y, vx, vy){
+    var color = nextColor();
+    var r = state.size;
+    var speed = Math.min(Math.hypot(vx||0, vy||0), 60);
+    var dirAngle = (vx||vy) ? Math.atan2(vy,vx) : rand(0,Math.PI*2);
+    var spreadR = state.spread + speed*2.4;     // faster flick = wider spray
+    var n = Math.round(state.density + speed*0.35);
+
+    // central glob
+    blob(x, y, r*rand(0.85,1.15), color, 0.95);
+
+    // satellite droplets, biased along motion direction
+    for(var i=0;i<n;i++){
+      var biased = Math.random() < 0.6 && speed>2;
+      var a = biased ? dirAngle + rand(-0.5,0.5) : rand(0,Math.PI*2);
+      var dist = Math.pow(Math.random(), 0.6) * spreadR;
+      var dx = Math.cos(a)*dist, dy = Math.sin(a)*dist;
+      var dr = r * rand(0.08, 0.5) * (1 - dist/(spreadR*1.4));
+      if(dr < 0.6) continue;
+      blob(x+dx, y+dy, dr, color, rand(0.55,0.95));
+    }
+
+    // tiny fine mist
+    for(var j=0;j<n;j++){
+      var aa = rand(0,Math.PI*2), dd = Math.pow(Math.random(),0.4)*spreadR*1.3;
+      blob(x+Math.cos(aa)*dd, y+Math.sin(aa)*dd, rand(0.5,1.8), color, rand(0.2,0.5));
+    }
+
+    // drips from the heavier blobs
+    if(state.drip>0){
+      var drops = state.drip===2 ? 3 : 1;
+      for(var k=0;k<drops;k++){
+        if(Math.random() < (state.drip===2?0.9:0.55)){
+          drip(x+rand(-r,r), y+rand(-r*0.3,r*0.6), r, color);
+        }
+      }
+    }
+  }
+
+  // ---- Undo ----
+  function pushUndo(){
+    try{
+      undoStack.push(ctx.getImageData(0,0,W,H));
+      if(undoStack.length>MAX_UNDO) undoStack.shift();
+    }catch(e){/* tainted canvas shouldn't happen here */}
+    document.getElementById("undo").disabled = undoStack.length===0;
+  }
+  document.getElementById("undo").addEventListener("click", function(){
+    if(!undoStack.length) return;
+    var img = undoStack.pop();
+    ctx.putImageData(img,0,0);
+    this.disabled = undoStack.length===0;
+  });
+
+  // ---- Pointer plumbing ----
+  var hintEl = document.getElementById("hint");
+  var drawing = false, last = null, lastT = 0, moved = false, strokeOpen = false;
+
+  function toCanvas(e){
+    var rect = canvas.getBoundingClientRect();
+    var sx = W/rect.width, sy = H/rect.height;
+    return { x:(e.clientX-rect.left)*sx, y:(e.clientY-rect.top)*sy };
+  }
+  function beginStroke(){ if(!strokeOpen){ pushUndo(); strokeOpen = true; } }
+
+  canvas.addEventListener("pointerdown", function(e){
+    e.preventDefault();
+    canvas.setPointerCapture(e.pointerId);
+    hintEl.classList.add("gone");
+    beginStroke();
+    drawing = true; moved = false;
+    var p = toCanvas(e);
+    last = p; lastT = performance.now();
+    splatter(p.x, p.y, 0, 0);
+  });
+  canvas.addEventListener("pointermove", function(e){
+    if(!drawing) return;
+    var p = toCanvas(e), now = performance.now();
+    var dt = Math.max(now-lastT, 1);
+    var vx = (p.x-last.x)/dt*8, vy = (p.y-last.y)/dt*8;
+    var dist = Math.hypot(p.x-last.x, p.y-last.y);
+    // throttle so a fast drag lays a continuous trail without overdrawing
+    if(dist > state.size*0.7){
+      splatter(p.x, p.y, vx, vy);
+      last = p; lastT = now; moved = true;
+    }
+  });
+  function endStroke(e){
+    if(!drawing) return;
+    drawing = false; strokeOpen = false;
+    try{ canvas.releasePointerCapture(e.pointerId); }catch(_){}
+  }
+  canvas.addEventListener("pointerup", endStroke);
+  canvas.addEventListener("pointercancel", endStroke);
+  canvas.addEventListener("pointerleave", endStroke);
+
+  // ---- Random splash ----
+  document.getElementById("splash").addEventListener("click", function(){
+    hintEl.classList.add("gone");
+    pushUndo();
+    var bursts = Math.round(rand(3,6));
+    for(var i=0;i<bursts;i++){
+      var x = rand(W*0.12, W*0.88), y = rand(H*0.12, H*0.85);
+      var ang = rand(0,Math.PI*2), v = rand(8,26);
+      splatter(x, y, Math.cos(ang)*v, Math.sin(ang)*v);
+    }
+  });
+
+  // ---- Clear ----
+  document.getElementById("clear").addEventListener("click", function(){
+    pushUndo();
+    paintBackground();
+    hintEl.classList.remove("gone");
+  });
+
+  // ---- Save ----
+  document.getElementById("save").addEventListener("click", function(){
+    var a = document.createElement("a");
+    a.download = "splatter-studio.png";
+    a.href = canvas.toDataURL("image/png");
+    a.click();
+  });
+
+  // ---- Keyboard niceties ----
+  window.addEventListener("keydown", function(e){
+    if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==="z"){
+      e.preventDefault(); document.getElementById("undo").click();
+    }
+  });
+
+  buildSwatches();
+})();
+</script>
+</body>
+</html>
