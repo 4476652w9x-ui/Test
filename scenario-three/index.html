@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     Scenario Three — landing page
+     Built on the 75cl editorial house style:
+     warm cream paper · near-black ink · one deep-blue accent ·
+     hairline rules · IBM Plex Sans + Mono · square corners,
+     no shadows, no gradients. Spec panel is the signature part.
+     ============================================================ -->
+<html lang="en-AU">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Scenario Three — the cost of an hour</title>
+<meta name="description" content="A weekly publication and a fractional-CFO practice on the financial decisions, systems and processes that run a professional-services business." />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--font-sans); font-weight: 400;
+    font-feature-settings: "liga","kern","onum";
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 56px; }
+  a { color: var(--accent); text-decoration: none; }
+
+  /* masthead */
+  .masthead {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 30px 0 18px; border-bottom: 1px solid var(--ink);
+  }
+  .wordmark { font-size: 22px; font-weight: 500; letter-spacing: -0.02em; color: var(--ink); }
+  .wordmark span { color: var(--accent); }
+  .nav { display: flex; gap: 30px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+  .nav a { color: inherit; }
+  .nav a:hover { color: var(--accent); }
+
+  /* hero */
+  .hero { display: grid; grid-template-columns: 1.25fr 1fr; gap: 56px; align-items: start; padding: 64px 0 56px; }
+  .h1 { font-size: 64px; line-height: .95; letter-spacing: -0.03em; font-weight: 500; margin: 16px 0 0; color: var(--ink); }
+  .h1 span { color: var(--accent); }
+  .lede { font-size: 17px; line-height: 1.7; max-width: 540px; margin: 26px 0 0; }
+  .lede b { font-weight: 500; }
+
+  .features { display: flex; gap: 34px; margin-top: 34px; }
+  .feature { flex: 1; border-top: 1px solid var(--ink); padding-top: 12px; }
+  .feature p { margin: 6px 0 0; font-family: var(--font-mono); font-size: 11px; line-height: 1.65; color: var(--ink-soft); }
+
+  .cta-row { display: flex; gap: 16px; align-items: center; margin-top: 36px; flex-wrap: wrap; }
+
+  /* the argument — quiet stat band */
+  .argument { border-top: 1px solid var(--rule); padding: 56px 0; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; margin-top: 30px; }
+  .stat .n { font-family: var(--font-sans); font-weight: 500; font-size: 52px; line-height: 1; letter-spacing: -0.03em; color: var(--ink); }
+  .stat .n span { color: var(--accent); }
+  .stat .sub { font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; color: var(--ink-soft); margin-top: 12px; line-height: 1.6; }
+  .arg-note { max-width: 620px; font-size: 16px; line-height: 1.7; margin: 40px 0 0; }
+
+  /* the three approaches */
+  .approaches { border-top: 1px solid var(--rule); padding: 56px 0; }
+  .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px; margin-top: 30px; }
+  .col { border-top: 1px solid var(--ink); padding-top: 14px; }
+  .col .idx { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; color: var(--accent); }
+  .col h3 { font-size: 20px; font-weight: 500; letter-spacing: -0.01em; margin: 10px 0 2px; }
+  .col .hook { font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; color: var(--ink-soft); font-style: italic; }
+  .col dl { margin: 16px 0 0; }
+  .col dt { font-family: var(--font-mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); margin-top: 12px; }
+  .col dd { margin: 3px 0 0; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* subscribe band */
+  .subscribe { border-top: 1px solid var(--ink); padding: 56px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .subscribe h2 { font-size: 40px; line-height: 1.0; letter-spacing: -0.02em; font-weight: 500; margin: 12px 0 0; }
+  .form-row { display: flex; gap: 0; border: 1px solid var(--ink); }
+  .form-row input {
+    flex: 1; border: 0; background: transparent; padding: 15px 16px;
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: .02em; color: var(--ink);
+  }
+  .form-row input::placeholder { color: var(--ink-faint); }
+  .form-row input:focus { outline: none; }
+  .form-row button {
+    border: 0; border-left: 1px solid var(--ink); background: var(--accent); color: var(--paper);
+    padding: 0 24px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .22em; text-transform: uppercase; cursor: pointer;
+  }
+  .sub-meta { font-family: var(--font-mono); font-size: 10px; letter-spacing: .04em; color: var(--ink-faint); margin-top: 14px; line-height: 1.7; }
+
+  /* footer */
+  .footer { border-top: 1px solid var(--ink); padding: 22px 0 56px; display: flex; justify-content: space-between; align-items: flex-start; }
+  .footer .mono { font-family: var(--font-mono); font-size: 10px; letter-spacing: .04em; color: var(--ink-faint); line-height: 1.8; }
+  .footer .mono a { color: var(--ink-soft); }
+
+  @media (max-width: 820px) {
+    .wrap { padding: 0 28px; }
+    .hero, .stat-grid, .three, .subscribe { grid-template-columns: 1fr; gap: 34px; }
+    .h1 { font-size: 46px; }
+    .nav { display: none; }
+  }
+</style>
+</head>
+<body class="paper-grain">
+  <div class="wrap" style="position:relative;">
+
+    <!-- masthead -->
+    <div class="masthead">
+      <div class="wordmark">Scenario&nbsp;<span>Three</span></div>
+      <nav class="nav">
+        <a href="#weekly">The weekly</a><a href="#argument">The framework</a><a href="#approaches">Approaches</a><a href="#practice">The practice</a>
+      </nav>
+      <div class="t-meta">AU · FRACTIONAL CFO</div>
+    </div>
+
+    <!-- hero -->
+    <div class="hero">
+      <div>
+        <div class="t-eyebrow">From the desk · professional-services finance</div>
+        <h1 class="h1">The cost<br/>of an <span>hour</span>.</h1>
+        <p class="lede">
+          A weekly publication and a fractional-CFO practice on the financial
+          decisions, systems and processes that run a professional-services
+          business. The fully-burdened cost of a person is fixed. <b>The rate you
+          charge against it is a policy choice</b> — and most firms have never
+          made it on purpose.
+        </p>
+
+        <div class="features" id="weekly">
+          <div class="feature">
+            <div class="t-label" style="color:var(--accent);font-size:9px;">① The weekly</div>
+            <p>A working-CFO note most Fridays. One decision, worked end to end — cost rates, pricing, incentives, and the systems underneath.</p>
+          </div>
+          <div class="feature" id="practice">
+            <div class="t-label" style="color:var(--accent);font-size:9px;">② The practice</div>
+            <p>Fractional CFO for professional-services firms. The same decisions, made inside your numbers, on a short list of engagements.</p>
+          </div>
+        </div>
+
+        <div class="cta-row">
+          <a href="#subscribe" class="btn">Subscribe to the weekly</a>
+          <a href="#subscribe" class="btn btn-ghost">Request an intro</a>
+          <span class="t-meta">FREE · A NEW ISSUE MOST FRIDAYS</span>
+        </div>
+      </div>
+
+      <!-- spec panel -->
+      <div>
+        <div class="spec">
+          <div class="spec-head">
+            <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);">The practice</span>
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--accent);">S3–CFO</span>
+          </div>
+          <div class="spec-row"><span class="k">Focus</span><span class="v">Professional-services finance</span></div>
+          <div class="spec-row"><span class="k">Engagement</span><span class="v">Fractional · fixed scope</span></div>
+          <div class="spec-row"><span class="k">Cadence</span><span class="v">Weekly working session</span></div>
+          <div class="spec-row"><span class="k">Output</span><span class="v">Decisions + the model</span></div>
+          <div class="spec-row"><span class="k">Capacity</span><span class="v">A short list at a time</span></div>
+          <div class="spec-row"><span class="k">Basis</span><span class="v">Fixed fee · no overage</span></div>
+        </div>
+        <p class="t-meta" style="margin-top:16px;line-height:1.7;">
+          ★ The canonical numbers live in one model. When an issue cites a figure,
+          it is pulled from there — so the worked examples never drift.
+        </p>
+      </div>
+    </div>
+
+    <!-- the argument: the tell -->
+    <div class="argument" id="argument">
+      <div class="t-eyebrow">The tell · one project, 200 delivered hours</div>
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="n">$143 <span>vs</span> $109</div>
+          <div class="sub">COST RATE PER HOUR &nbsp;·&nbsp; SURFACED / SILENT &nbsp;VS&nbsp; FLOATING</div>
+        </div>
+        <div class="stat">
+          <div class="n">59.3% <span>vs</span> 68.9%</div>
+          <div class="sub">PROJECT MARGIN ON IDENTICAL WORK</div>
+        </div>
+      </div>
+      <p class="arg-note">
+        Same person, same salary, same 200 hours delivered. The only thing that
+        changed is which hours you divide the fixed cost by. Spread it over actual
+        hours and every project looks the most profitable it ever will — and the
+        books still reconcile to zero, so nothing trips the alarm. The first job
+        is to find out which approach your system is actually running. Usually
+        it is the one nobody chose.
+      </p>
+    </div>
+
+    <!-- the three approaches -->
+    <div class="approaches" id="approaches">
+      <div class="t-eyebrow">Three ways to price an hour</div>
+      <div class="three">
+        <div class="col">
+          <div class="idx">①</div>
+          <h3>Standard-Rate, Surfaced</h3>
+          <div class="hook">“Surface it”</div>
+          <dl>
+            <dt>Denominator</dt><dd>Standard capacity, locked.</dd>
+            <dt>Hours over the day</dt><dd>Overtime shows as a separate margin line.</dd>
+            <dt>Reads as</dt><dd>An honest, visible gap that asks to be explained.</dd>
+          </dl>
+        </div>
+        <div class="col">
+          <div class="idx">②</div>
+          <h3>Actual-Rate, Floating</h3>
+          <div class="hook">“Dilute it”</div>
+          <dl>
+            <dt>Denominator</dt><dd>Actual hours — it floats.</dd>
+            <dt>Hours over the day</dt><dd>Overtime buried in a lower rate.</dd>
+            <dt>Reads as</dt><dd>Always reconciles to zero. That is the danger.</dd>
+          </dl>
+        </div>
+        <div class="col">
+          <div class="idx">③</div>
+          <h3>Standard-Rate, Silent</h3>
+          <div class="hook">“Ignore it”</div>
+          <dl>
+            <dt>Denominator</dt><dd>Standard capacity, locked.</dd>
+            <dt>Hours over the day</dt><dd>Overtime never recorded.</dd>
+            <dt>Reads as</dt><dd>A legitimate design — for a firm that means it.</dd>
+          </dl>
+        </div>
+      </div>
+      <p class="arg-note">
+        Even-handed on the choice; a hard line on choosing Floating by accident.
+        Surfaced and Silent are legitimate designs for different firms. Floating
+        is almost never chosen on purpose — it is the default a practice-management
+        tool reaches for when no one has decided.
+      </p>
+    </div>
+
+    <!-- subscribe -->
+    <div class="subscribe" id="subscribe">
+      <div>
+        <div class="t-eyebrow">The weekly</div>
+        <h2>One decision,<br/>worked properly.</h2>
+      </div>
+      <div>
+        <form class="form-row" onsubmit="return false;">
+          <input type="email" placeholder="you@firm.com" aria-label="Email address" />
+          <button type="submit">Subscribe</button>
+        </form>
+        <p class="sub-meta">
+          A NEW ISSUE MOST FRIDAYS · NO COURSE, NO FUNNEL · UNSUBSCRIBE IN ONE CLICK<br/>
+          Prefer to talk? <a href="mailto:hello@scenariothree.com">Request an intro →</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="mono">
+        Scenario Three — Steven Green<br/>
+        Fractional CFO &amp; weekly publication · Australia
+      </div>
+      <div class="mono" style="text-align:right;">
+        <a href="#weekly">The weekly</a> &nbsp; <a href="#practice">The practice</a> &nbsp; <a href="mailto:hello@scenariothree.com">Contact</a><br/>
+        © MMXXVI · The cost of an hour
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+/* ============================================================
+   75cl HOUSE STYLE — design tokens
+   A quiet, editorial, specification-led system.
+   Warm paper · near-black ink · one deep-blue accent · hairlines.
+   Use these variables everywhere. Do not introduce new colors.
+   ============================================================ */
+
+:root {
+  /* ---- PAPER (backgrounds) — warm cream, never pure white ---- */
+  --paper:        #F5F2EA;   /* primary surface */
+  --paper-2:      #EFEBE0;   /* recessed panels, cards, spec tables */
+  --paper-card:   #FBF9F3;   /* a lifted card on cream, if needed */
+
+  /* ---- INK (text) — a 3-step ramp, low-contrast secondary ---- */
+  --ink:          #1A1A1C;   /* headlines, primary text, strong rules */
+  --ink-soft:     #5C5C60;   /* body support, captions, table values */
+  --ink-faint:    #A8A8AC;   /* meta, page numbers, disabled, eyebrows on dark */
+
+  /* ---- ACCENT — exactly one. Deep ink blue. Used sparingly. ---- */
+  --accent:       #1B2A4E;   /* links, key numerals, CTA fill, eyebrows */
+  --accent-soft:  #3B4C72;   /* hover / secondary accent */
+
+  /* ---- RULES — hairlines are the primary structural device ---- */
+  --rule:         #CFC9BC;   /* standard hairline on cream (~18% ink) */
+  --rule-soft:    #E2DDD1;   /* faint hairline (~10% ink) */
+  --rule-strong:  #1A1A1C;   /* a deliberate 0.5–1px black rule */
+
+  /* ---- TYPE ---- */
+  --font-sans: "IBM Plex Sans", -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  /* optional serif display alternative for long-form / web only */
+  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+  /* ---- RADIUS — sharp. Corners stay square. ---- */
+  --radius: 0px;        /* default: no rounding */
+  --radius-soft: 2px;   /* the most you ever round */
+}
+
+/* ------------------------------------------------------------
+   TYPE SCALE  (web px — scale down ~25% for dense UI)
+   ------------------------------------------------------------ */
+.t-display-xl { font-family: var(--font-sans); font-weight: 500; font-size: 60px; line-height: .95; letter-spacing: -0.025em; color: var(--ink); }
+.t-display-l  { font-family: var(--font-sans); font-weight: 500; font-size: 40px; line-height: 1.0;  letter-spacing: -0.02em;  color: var(--ink); }
+.t-display-m  { font-family: var(--font-sans); font-weight: 500; font-size: 28px; line-height: 1.1;  letter-spacing: -0.015em; color: var(--ink); }
+.t-title      { font-family: var(--font-sans); font-weight: 500; font-size: 20px; line-height: 1.25; letter-spacing: -0.01em;  color: var(--ink); }
+.t-body-l     { font-family: var(--font-sans); font-weight: 400; font-size: 16px; line-height: 1.7;  color: var(--ink); }
+.t-body       { font-family: var(--font-sans); font-weight: 400; font-size: 14px; line-height: 1.6;  color: var(--ink); }
+.t-body-soft  { font-family: var(--font-sans); font-weight: 400; font-size: 14px; line-height: 1.6;  color: var(--ink-soft); }
+
+/* eyebrows, labels, kickers — ALWAYS mono, uppercase, tracked */
+.t-label      { font-family: var(--font-mono); font-weight: 500; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); }
+.t-eyebrow    { font-family: var(--font-mono); font-weight: 500; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+.t-meta       { font-family: var(--font-mono); font-weight: 400; font-size: 10px; letter-spacing: .04em; color: var(--ink-faint); }
+
+/* tabular figures for any aligned numbers */
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------
+   STRUCTURAL PARTS
+   ------------------------------------------------------------ */
+
+/* hairline divider */
+.rule      { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+.rule-soft { border: 0; border-top: 1px solid var(--rule-soft); margin: 0; }
+.rule-ink  { border: 0; border-top: 1px solid var(--ink); margin: 0; }
+
+/* specification table — label / value grid, the signature component */
+.spec { border: 1px solid var(--ink); background: var(--paper-2); }
+.spec-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 18px; border-bottom: 1px solid var(--ink);
+}
+.spec-row {
+  display: grid; grid-template-columns: 130px 1fr;
+  padding: 9px 18px; border-bottom: 1px solid var(--rule-soft);
+}
+.spec-row:last-child { border-bottom: 0; }
+.spec-row .k { font-family: var(--font-mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+.spec-row .v { font-family: var(--font-mono); font-size: 12px; color: var(--ink); }
+
+/* button — accent fill, mono caps, square, no shadow */
+.btn {
+  display: inline-block; background: var(--accent); color: var(--paper);
+  border: none; border-radius: var(--radius);
+  padding: 14px 26px; font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+  text-decoration: none; cursor: pointer;
+}
+.btn-ghost {
+  background: transparent; color: var(--ink); border: 1px solid var(--ink);
+  padding: 13px 25px;
+}
+
+/* warm paper grain — apply to a full-bleed wrapper, very subtle */
+.paper-grain { position: relative; background: var(--paper); }
+.paper-grain::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  mix-blend-mode: multiply;
+  background:
+    radial-gradient(1200px 800px at 30% 20%, rgba(110,90,50,.04), transparent 60%),
+    radial-gradient(800px 600px at 80% 90%, rgba(40,40,60,.03), transparent 55%);
+}
