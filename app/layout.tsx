@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { MobileCtaBar } from "@/components/layout/mobile-cta-bar";
 import { cn } from "@/lib/utils";
+import { asset } from "@/lib/asset";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     "blocked drains Canberra",
     "gas ducted heating Canberra",
   ],
-  icons: { icon: "/favicon.svg" },
+  icons: { icon: asset("/favicon.svg") },
 };
 
 export const viewport: Viewport = {

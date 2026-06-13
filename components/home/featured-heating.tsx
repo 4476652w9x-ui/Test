@@ -4,6 +4,7 @@ import { Check, Snowflake } from "lucide-react";
 import { featuredService } from "@/content/services";
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
+import { asset } from "@/lib/asset";
 
 /**
  * Seasonal feature block for Heating & Cooling — given visual weight because
@@ -52,7 +53,7 @@ export function FeaturedHeating() {
           {/* Image */}
           <div className="relative min-h-[280px] lg:h-full lg:min-h-[460px]">
             <Image
-              src="/images/heating.jpg"
+              src={asset("/images/heating.jpg")}
               alt="An Australian hillside suburb glowing warm at dusk on a cold evening — homes kept cosy through winter."
               fill
               sizes="(min-width: 1024px) 45vw, 100vw"

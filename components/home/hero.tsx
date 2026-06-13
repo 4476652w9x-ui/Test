@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { site, yearsInBusiness } from "@/content/site";
 import { Stars } from "@/components/brand/stars";
 import { CallButton, BookButton } from "@/components/brand/cta-buttons";
+import { asset } from "@/lib/asset";
 
 /**
  * Hero — asymmetric split: confident headline + dual CTA on the left, a tall
@@ -91,7 +92,7 @@ export function Hero() {
         >
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] shadow-lift ring-1 ring-forest-900/10">
             <Image
-              src="/images/hero.jpg"
+              src={asset("/images/hero.jpg")}
               alt="Clean water running from a modern kitchen mixer tap in an Australian home."
               fill
               priority
