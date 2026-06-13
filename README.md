@@ -95,14 +95,16 @@ component rationale. In short:
 
 ## Imagery
 
-The demo ships **branded SVG placeholders** in `/public/images` (clearly
-labelled "replace with real photo") so it renders perfectly offline. Replace
-them with real, optimised photography:
+The site ships **real Australian stock photography** (Unsplash, free for
+commercial use — see `public/images/CREDITS.md`). To swap in your own photos:
 
-- Drop files into `/public/images` and update the `src` in the relevant
-  component, **or**
+- Replace the files in `/public/images` (keep the same names), **or** add new
+  files and update the `src` in the relevant component, **or**
 - Use remote photography — `images.unsplash.com` is already whitelisted in
   `next.config.mjs`; add your own host there. Always keep meaningful `alt` text.
+
+> Tip: for maximum trust, replace these with the business's own photos of real
+> Canberra jobs before launch.
 
 All images go through `next/image` for automatic optimisation and zero layout
 shift.

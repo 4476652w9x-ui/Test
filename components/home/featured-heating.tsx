@@ -52,8 +52,8 @@ export function FeaturedHeating() {
           {/* Image */}
           <div className="relative min-h-[280px] lg:h-full lg:min-h-[460px]">
             <Image
-              src="/images/heating.svg"
-              alt="Gas ducted heating and reverse-cycle system service in a Canberra home (placeholder image)."
+              src="/images/heating.jpg"
+              alt="An Australian hillside suburb glowing warm at dusk on a cold evening — homes kept cosy through winter."
               fill
               sizes="(min-width: 1024px) 45vw, 100vw"
               className="object-cover"
