@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Semantic design tokens (shadcn-style). These map onto the forest/copper
+ * scales defined in tailwind.config.ts. Edit here to retune the whole site.
+ * Values are HSL channels (no hsl() wrapper) so Tailwind can compose opacity.
+ */
+@layer base {
+  :root {
+    --background: 80 14% 98%; /* warm off-white */
+    --foreground: 100 17% 7%; /* warm ink */
+
+    --card: 0 0% 100%;
+    --card-foreground: 100 17% 7%;
+
+    --primary: 150 38% 22%; /* forest-700/800 */
+    --primary-foreground: 80 30% 97%;
+
+    --secondary: 140 20% 94%;
+    --secondary-foreground: 150 38% 18%;
+
+    --muted: 140 14% 95%;
+    --muted-foreground: 140 6% 38%;
+
+    --accent: 22 60% 47%; /* copper-500 */
+    --accent-foreground: 30 50% 98%;
+
+    --destructive: 0 72% 42%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 140 12% 88%;
+    --input: 140 12% 86%;
+    --ring: 22 60% 47%; /* copper focus ring */
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "ss01", "cv01", "cv11";
+    text-rendering: optimizeLegibility;
+  }
+  /* Visible, accessible focus ring everywhere. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight text-balance;
+  }
+  ::selection {
+    @apply bg-copper-500/20 text-ink;
+  }
+}
+
+@layer components {
+  /* Constrained, comfortable measure for long-form copy. */
+  .prose-measure {
+    @apply max-w-prose text-pretty leading-relaxed text-ink-soft;
+  }
+  /* Subtle eyebrow label used above section headings. */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-copper-600;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
+
+/* Respect users who prefer reduced motion: kill non-essential animation. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
